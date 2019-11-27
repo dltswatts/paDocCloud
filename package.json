@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/dltswatts/paDocCloud#readme",
   "dependencies": {
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.1",
     "normalize.css": "^8.0.1"
   }
 }
