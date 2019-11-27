@@ -1,0 +1,19 @@
+2017 Actuals by Type.vue
+2017 YTD Total Expense in USD.vue
+2017 YTD Total Net Expense USD.vue
+2017YTD Actual Load w Tax Refund.vue
+2017YTD Actual Load.vue
+2018 Actuals by Type - All Detials for a Study.vue
+2018 Actuals by Type - Cutoffs - Details.vue
+2018 Actuals by Type - Cutoffs.vue
+2018 Actuals by Type.vue
+AUS Tax Refund Adj - 2017.vue
+TEMP_20180202105307.vue
+zZeroOutView.vue
+zZeroOutView_201712.vue
+zZeroOut_2017.vue
+}TEMP_20180202105307.vue
+}TEMP_20180202110139.vue
+}TEMP_20180202111626.vue
+}TEMP_20180202111804.vue
+}TEMP_20180202135602.vue

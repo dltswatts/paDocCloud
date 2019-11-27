@@ -1,0 +1,140 @@
+body {
+    padding-top: 55px;
+}
+
+h2 {
+    font-weight: bold;
+    text-align: center;
+}
+
+li #btn-holder {
+    text-align: center;
+}
+
+.title1 {
+    margin: auto;
+}
+
+
+.title2 {
+    font-weight: bold;
+    text-align: center;
+}
+
+.title3 {
+    font-size: 80%;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.ui.icon.header:first-child {
+    margin-top: 15px;
+}
+
+.form {
+    width: 300px;
+    margin: 15px auto;
+}
+
+.container {
+    text-align: center;
+/*    margin-top: 50px;*/
+}
+
+.jumbotron {
+    color: #2c3e50;
+    background: #ecf0f1;
+}
+
+.navbar-inverse {
+    background: #2c3e50;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+    color: white;
+}
+
+.navbar-inverse .navbar-brand {
+    color: white;
+}
+
+.dropdown-menu {
+    padding-left: 3px
+}
+
+.dropdown-menu li a {
+    padding: none;
+}
+
+.btn-space {
+    margin-top: 3px;
+}
+
+#container-buttons {
+    padding-bottom: 15px;
+}
+
+#install-btn {
+    margin-right: 25px;
+}
+
+#config-btn {
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+#report-btn {
+    margin-left: 25px;
+}
+
+#gdetnum {
+    display: block;
+    width: 920;
+    height: 220;
+    margin: 0 auto;
+    border: 0;
+}
+
+#gdet {
+    display: block;
+    width: 920;
+    height: 140;
+    margin: 0 auto;
+    border: 0;
+}
+
+#grelsize {
+    display: block;
+    width: 1020;
+    height: 1020;
+    margin: 0 auto;
+    border: 0;
+}
+
+#greldet {
+    display: block;
+    width: 920;
+    height: 140;
+    margin: 0 auto;
+    border: 0;
+}
+
+#grdimuse {
+    display: block;
+    width: 920;
+    height: 220;
+    margin: 0 auto;
+    border: 0;
+}
+
+#grdimdet {
+    display: block;
+    width: 920;
+    height: 100;
+    margin: 0 auto;
+    border: 0;
+}
+
+#dim-detail-subtitle1 {
+    margin-bottom: 40px;
+}
