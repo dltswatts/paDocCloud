@@ -1,0 +1,30 @@
+{
+  "name": "padoccloud",
+  "version": "1.0.0",
+  "description": "paDoc instance for the cloud",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dltswatts/paDocCloud.git"
+  },
+  "keywords": [
+    "paDoc",
+    "tm1",
+    "planning",
+    "analytics",
+    "grandview"
+  ],
+  "author": "Dean Watts",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dltswatts/paDocCloud/issues"
+  },
+  "homepage": "https://github.com/dltswatts/paDocCloud#readme",
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "normalize.css": "^8.0.1"
+  }
+}
