@@ -8,6 +8,7 @@
 # ----Date-----|----Programmer---|---------------Description---------------------------------------------------------------------#
 #   Mar-2017         Jim Miller    -  Created framework.                                                                                                  # 
 #   Apr-2018     Dean Watts    - Revised structure and re-wrote output documents
+#   Nov-2019   Dean Watts    - Added Content-Security-Policy for each page.  Introduced css elements
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#
 
 # --- Declares
@@ -84,6 +85,7 @@ end;
 saved = Trim(pDocumentName);
 pDocumentName = pOutputSite|'Cube Structures';
 asciioutput(Trim(pDocumentName) |  '.html', '<head><link rel="stylesheet" type="text/css" href="css/gridtable.css">');
+asciioutput(Trim(pDocumentName) |  '.html', '<link rel="stylesheet" type="text/css" href="css/main.css">');
 asciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv="Content-Security-Policy" content= "frame-src ');
 asciioutput(Trim(pDocumentName) |  '.html', '''self''');
 asciioutput(Trim(pDocumentName) |  '.html', '">');
@@ -94,75 +96,65 @@ asciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv="Content-Security-
 asciioutput(Trim(pDocumentName) |  '.html', '''self''');
 asciioutput(Trim(pDocumentName) |  '.html', '">');
 asciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv="Content-Security-Policy" content= "style-src ');
-asciioutput(Trim(pDocumentName) |  '.html', '''unsafe-inline''');
-asciioutput(Trim(pDocumentName) |  '.html', '"></head>');
+asciioutput(Trim(pDocumentName) |  '.html', '''self''');
+asciioutput(Trim(pDocumentName) |  '.html', '">');
+asciioutput(Trim(pDocumentName) |  '.html', '</head>');
 
 # --- start the table that will hold the current category of cubes
-asciioutput(Trim(pDocumentName) |  '.html', '<body><center><img src="img/GV.png" ></center>');
-asciioutput(Trim(pDocumentName) |  '.html', '<font size="2" face="verdana"><h2><b><center>' | Trim(pHeadingText) | ' Cognos TM1 Cube Structures</center></h2></b></font>');
-asciioutput(Trim(pDocumentName) |  '.html', '<font size="1" face="verdana"><b><center>Note: cubes are listed below grouped by category</center></b></font>');
-asciioutput(Trim(pDocumentName) |  '.html', '<font size="1" face="verdana"><b><center>Model is as of ' | Trim(pAsOfDate) | '</center></b></font>');
+asciioutput(Trim(pDocumentName) |  '.html', '<body><div class="heading"><img src="img/GV.png" class="logo">');
+asciioutput(Trim(pDocumentName) |  '.html', '<div class="title1">' | Trim(pHeadingText) | ' Cube Structures</div>');
+asciioutput(Trim(pDocumentName) |  '.html', '<div class="title2 title3">Note: cubes are listed below grouped by category<BR>');
+asciioutput(Trim(pDocumentName) |  '.html', 'Model is as of ' | Trim(pAsOfDate) | '</div></div>');
 
 # --- now drive the creation of the diagram by category, then cube
 
-paiger=0;
 i=1;
 ii = dimsiz(paDoc_008_DimName);
+asciioutput(Trim(pDocumentName) |  '.html', '<div class="grids">');
 while (i<ii);
 	sE = dimnm(paDoc_008_DimName, i);
 	if (DTYPE(paDoc_008_DimName, sE)@='C');
 		# --- its a category to process
 		ikids = ELCOMPN(paDoc_008_DimName, sE);
 		if (iKids>0);
-##                                                                if (paiger>85);
-##                                                                         asciioutput(Trim(pDocumentName) |  '.html', '</td></table>');
-##                                                                         asciioutput(Trim(pDocumentName) |  '.html', '<p style="page-break-after:always;"></p><br><center><img src="img/GV.png" ></center>');
-##                                                                         asciioutput(Trim(pDocumentName) |  '.html', '<font size="2" face="verdana"><h2><b><center>' | Trim(pHeadingText) | ' Cognos TM1 Cube Structures</center></h2></b></font>');
-##                                                                         asciioutput(Trim(pDocumentName) |  '.html', '<font size="1" face="verdana"><b><center>Note: cubes are listed below grouped by category</center></b></font>');
-##                                                                         asciioutput(Trim(pDocumentName) |  '.html', '<font size="1" face="verdana"><b><center>Model is as of ' | Trim(pAsOfDate) | '</center></b></font>');
-##                                                                         paiger=0;
-##                                                                endif;
-
-			asciioutput(Trim(pDocumentName) |  '.html', '<center><table  class="gridtable">');
-			asciioutput(Trim(pDocumentName) |  '.html', '<tr><td valign="top" colspan="' | str(ikids,3,0) | '" bgcolor="blue"><font size="4" color="black"><b><center>' | sE | '</center></b></font></td></tr><tr></tr>');
+			asciioutput(Trim(pDocumentName) |  '.html', '<div><table  class="gridtable">');
+			asciioutput(Trim(pDocumentName) |  '.html', '<tr><td class="thead" colspan="' | str(ikids,3,0) | '" >' | sE | '</td></tr><tr></tr>');
 			iii = 1;
 			while (iii<=iKids);
-				# --- get the kid			
+				# --- get the kid
 				sCubeName = ELCOMP(paDoc_008_DimName, sE, iii);
-                                                                                     asciioutput(Trim(pDocumentName) |  '.html', '<td valign="top">');	
+                                                                asciioutput(Trim(pDocumentName) |  '.html', '<td>');
 				asciioutput(Trim(pDocumentName) |  '.html', '<table class="gridtable">');
-				asciioutput(Trim(pDocumentName) |  '.html', '<tr><th><b><font size="1"><center>' | sCubeName  | ' </center></b></th>');
+				asciioutput(Trim(pDocumentName) |  '.html', '<tr><th class="thhead">' | sCubeName  | '</th>');
 				# --- process the cube
-                                                                                     j=1;  
-                                                                                     asciioutput(Trim(pDocumentName) |  '.html', '<tr><td><font size="1">');
-                                                                                     paiger = paiger + 6;
-	                                                               while (j<=30);			
-			                               sD = TABDIM(sCubeName, j);
-			                               if (trim(sD)@<>'');
-                                                                                                             gitIt = CellGetS(paDoc_CubeName, sCubeName, 'Dimensions');
-                                                                                                             CellPutS(gitIT | '<BR>' | sD,paDoc_CubeName, sCubeName, 'Dimensions');
-                                                                                                             # --- okay update this dim in the dim cube with the cube name
-                                                                                                             if(subst(sD,1,1)@<>'}');
-                                                                                                             gitIt = CellGetS(paDoc_CubeName, sD, 'Cubes');
-                                                                                                             endif;
-                                                                                                             if (scan(sCubeName, gitit)=0);
-                                                                                                                      CellPutS(gitIT | '<BR>' | sCubeName, paDoc_CubeName, sD, 'Cubes');
-                                                                                                             endif;                                                                                                    				  
-                                                                                                             asciioutput(Trim(pDocumentName) |  '.html', '<font size="1"><li>' | sD | '</font></li>');
-                                                                                                             paiger = paiger + 1;
-			                               endif;
-			                                j=j+1;
-	                                                                 end;				
+                                                                                j=1;
+                                                                               asciioutput(Trim(pDocumentName) |  '.html', '<tr><td>');
+   	                                                               while (j<=30);
+			                                     sD = TABDIM(sCubeName, j);
+			                                     if (trim(sD)@<>'');
+                                                                                        gitIt = CellGetS(paDoc_CubeName, sCubeName, 'Dimensions');
+                                                                                        CellPutS(gitIT | '<BR>' | sD,paDoc_CubeName, sCubeName, 'Dimensions');
+                                                                               # --- okay update this dim in the dim cube with the cube name
+                                                                                        if(subst(sD,1,1)@<>'}');
+                                                                                           gitIt = CellGetS(paDoc_CubeName, sD, 'Cubes');
+                                                                                        endif;
+                                                                                        if (scan(sCubeName, gitit)=0);
+                                                                                           CellPutS(gitIT | '<BR>' | sCubeName, paDoc_CubeName, sD, 'Cubes');
+                                                                                        endif;
+                                                                                        asciioutput(Trim(pDocumentName) |  '.html', '<li>' | sD | '</li>');
+			                                     endif;
+			                                     j=j+1;
+	                                                               end;
 				iii = iii + 1;
-                                                                                     asciioutput(Trim(pDocumentName) |  '.html', '</td></tr></table></td>');
-                                                                                     paiger = paiger + 1;
+                                                                asciioutput(Trim(pDocumentName) |  '.html', '</td></tr></table></td>');
 			end;
-			asciioutput(Trim(pDocumentName) |  '.html', '</td></table></body>');
-                                                                paiger = paiger + 1;
+			asciioutput(Trim(pDocumentName) |  '.html', '</td></table></div>');
 		endif;
-	endif;	
+	endif;
 	i=i+1;
 end;
+asciioutput(Trim(pDocumentName) |  '.html', '</div></body>');
+
 if (sSetupFlag@='No');
          asciioutput(Trim(pDocumentName) |  '.html', '<table class="gridtable"><td><center>You have not categorized any cubes. Diagram can not be generated</center></td></table>');
 Endif;
