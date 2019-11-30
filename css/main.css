@@ -24,22 +24,52 @@ IMG.logo{
     margin-right: auto;
 }
 
+.toolTip {
+  position: absolute;
+  display: none;
+  min-width: 80px;
+  height: auto;
+  background: none repeat scroll 0 0 #ffffff;
+  border: 1px solid #6F257F;
+  padding: 14px;
+  text-align: center;
+}
+
 .title1 {
     text-align: center;
     font-size: x-large;
     font-weight: bold;
+    color: #1d2744;
     margin: 10px auto 10px;
 }
 
 .title2 {
-    font-weight: bold;
     text-align: center;
+    font-size: medium;
+    font-weight: bold;
+    color: #1d2744;
+    margin: 10px auto 10px;
 }
 
 .title3 {
-    font-size: 80%;
     text-align: center;
-    margin-bottom: 0;
+    font-size: small;
+    color: #1d2744;
+    font-weight: bold;
+}
+
+svg{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bar{
+    fill: #3f81b4;
+}
+
+.bar:hover{
+    fill: #1d2744;
 }
 
 .ui.icon.header:first-child {

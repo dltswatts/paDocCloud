@@ -1,15 +1,15 @@
 #~~~~~~~~~~~~~~~~  Start Program Description ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-# This process generates the application documentation                                                                                  #
+# This process creates the HTML paDoc report                                                                              #
 #~~~~~~~~~~~~~~~~  End Program Description ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#
-#~~~~~~~~~~~~~~~~~~~  Maintenance Log ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#
-# ----Date-----|----Programmer---|---------------Description---------------------------------------------------------------------#
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  Maintenance Log ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#
+# ----Date-----|----Programmer---|---------------Description---------------------------------------------------------------------------------------------------#
 #   Mar-2017         Jim Miller    -  Created framework.                                                                                                  # 
-#   Apr-2018     Dean Watts    - Revised structure and re-wrote output documents
-#   Nov-2019   Dean Watts    - Added Content-Security-Policy for each page.  Introduced css elements
-#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#
+#   Apr-2018     Dean Watts    - Revised structure and re-wrote output documents                                                    #
+#   Nov-2019   Dean Watts    - Added Content-Security-Policy for each page.  Introduced css elements                  #
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#
 
 # --- Declares
 DatasourceASCIIQuoteCharacter='';
@@ -84,6 +84,8 @@ end;
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\   Cube Structures.html  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#
 saved = Trim(pDocumentName);
 pDocumentName = pOutputSite|'Cube Structures';
+
+# --- HTML Head information
 asciioutput(Trim(pDocumentName) |  '.html', '<head><link rel="stylesheet" type="text/css" href="css/gridtable.css">');
 asciioutput(Trim(pDocumentName) |  '.html', '<link rel="stylesheet" type="text/css" href="css/main.css">');
 asciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv="Content-Security-Policy" content= "frame-src ');
@@ -100,12 +102,13 @@ asciioutput(Trim(pDocumentName) |  '.html', '''self''');
 asciioutput(Trim(pDocumentName) |  '.html', '">');
 asciioutput(Trim(pDocumentName) |  '.html', '</head>');
 
-# --- start the table that will hold the current category of cubes
+# --- Report Heading
 asciioutput(Trim(pDocumentName) |  '.html', '<body><div class="heading"><img src="img/GV.png" class="logo">');
 asciioutput(Trim(pDocumentName) |  '.html', '<div class="title1">' | Trim(pHeadingText) | ' Cube Structures</div>');
-asciioutput(Trim(pDocumentName) |  '.html', '<div class="title2 title3">Note: cubes are listed below grouped by category<BR>');
+asciioutput(Trim(pDocumentName) |  '.html', '<div class="title3">Note: cubes are listed below grouped by category<BR>');
 asciioutput(Trim(pDocumentName) |  '.html', 'Model is as of ' | Trim(pAsOfDate) | '</div></div>');
 
+# --- start the table that will hold the current category of cubes
 # --- now drive the creation of the diagram by category, then cube
 
 i=1;
@@ -688,175 +691,145 @@ Endif;
 # --- begin dimensions section
 #pDocumentName = savedname;
 pDocumentName = pOutputSite|'Dimensions';
-asciioutput(Trim(pDocumentName)  |  '.html', '<head><link rel="stylesheet" type="text/css" href="css/gridtable.css">');
+asciioutput(Trim(pDocumentName)  |  '.html', '<head><script type="text/javascript" src="js/jquery.3.4.1.min.js"></script>');
+asciioutput(Trim(pDocumentName)  |  '.html', '<link rel="stylesheet" type="text/css" href="css/gridtable.css">');
+asciioutput(Trim(pDocumentName) |  '.html', '<link rel="stylesheet" type="text/css" href="css/main.css">');
 asciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv="Content-Security-Policy" content= "frame-src ');
 asciioutput(Trim(pDocumentName) |  '.html', '''self''');
 asciioutput(Trim(pDocumentName) |  '.html', '">');
 asciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv="Content-Security-Policy" content= "script-src ');
 asciioutput(Trim(pDocumentName) |  '.html', '''unsafe-inline''');
-asciioutput(Trim(pDocumentName) |  '.html', '">');
-asciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv="Content-Security-Policy" content= "default-src ');
 asciioutput(Trim(pDocumentName) |  '.html', '''self''');
+asciioutput(Trim(pDocumentName) |  '.html', '''unsafe-eval''');
 asciioutput(Trim(pDocumentName) |  '.html', '">');
 asciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv="Content-Security-Policy" content= "style-src ');
-asciioutput(Trim(pDocumentName) |  '.html', '''unsafe-inline''');
+asciioutput(Trim(pDocumentName) |  '.html', '''self''');
 asciioutput(Trim(pDocumentName) |  '.html', '"></head>');
 
-# --- interestingly let's now add the details
-
-Paiger=0;
-
+# --- gather Dimesion details
+# --- Variables
 NoAtts = 0;
 NoDims = DIMSIZ('}Dimensions');
 q=1;
 Nid=0;
-totalelments=0;
+totalelements=0;
 l = 0;
+
+# --- 
 while(q<=NoDims);
-         sq=dimnm('}Dimensions', q);
-         if (subst(sq,1,1)@<>'}');
-                   Nid=Nid+1;
-                   if (dimsiz(sq)>l);
-                           l = dimsiz(sq);
-                           lq = sq;
-                   endif;
-                   totalelments =  totalelments + dimsiz(sq);
-         endif;
-         q=q+1;
+   sq=dimnm('}Dimensions', q);
+   if (subst(sq,1,1)@<>'}');
+      Nid=Nid+1;
+      if (dimsiz(sq)>l);
+         l = dimsiz(sq);
+         lq = sq;
+      endif;
+      totalelements =  totalelements + dimsiz(sq);
+   endif;
+   q=q+1;
 end;
-abig = totalelments/Nid;
+abig = totalelements/Nid;
 
-asciioutput(Trim(pDocumentName)  |  '.html', '<center><img src="img/GV.png" >');
-asciioutput(Trim(pDocumentName)  |  '.html', '<font size="2" face="verdana"><h2><b>' | Trim(pHeadingText) | ' TM1 Dimensions</h1>');
-asciioutput(Trim(pDocumentName)  |  '.html', '<font size="1" face="verdana">Total Number of Dimensions: ' | STR(Nid,3,0));
-asciioutput(Trim(pDocumentName)  |  '.html', '<BR>Average Dimension Size: ' | str(abig,5,0) | '<BR>Largest Dimension: ' | lq | ', with ' | str(l,9,0) | ' indexes<BR>');
-asciioutput(Trim(pDocumentName)  |  '.html', '<BR>');
-asciioutput(Trim(pDocumentName)  |  '.html', '<font size="2" face="verdana">Shared Dimensions by Number of Elements</font><BR><BR>');
+# --- Report Heading
+asciioutput(Trim(pDocumentName) |  '.html', '<body><div class="heading"><img src="img/GV.png" class="logo">');
+asciioutput(Trim(pDocumentName) |  '.html', '<div class="title1">' | Trim(pHeadingText) | ' - Dimensions</div>');
+asciioutput(Trim(pDocumentName) |  '.html', '<div class="title3">Total Number of Dimensions: ' | STR(Nid,3,0) |'<BR>');
+asciioutput(Trim(pDocumentName)  |  '.html', 'Average Dimension Size: ' | str(abig,5,0) | '<BR>');
+asciioutput(Trim(pDocumentName)  |  '.html', 'Largest Dimension: ' | lq | ', with ' | str(l,9,0) | ' indexes<BR>');
+asciioutput(Trim(pDocumentName) |  '.html', 'Model is as of ' | Trim(pAsOfDate) | '</div></div>');
 
-asciioutput(Trim(pDocumentName)  |  '.html', '<iframe width="920" height="220" align="center" src="DimViz001.html" frameborder="0"></iframe>');
-asciioutput(Trim(pDocumentName)  |  '.html', '<iframe width="920" height="100" align="center" src="keyed.html" frameborder="0"></iframe><BR>');
+# --- Report Graph
+asciioutput(Trim(pDocumentName)  |  '.html', '<div class="graphs"><div class="title2">Dimensions by Number of Elements</div>');
+asciioutput(Trim(pDocumentName)  |  '.html', '<svg width="950" height="220" class="graph" frameborder="0" id="DimViz"></svg></div>');
 
-asciioutput(Trim(pDocumentName)  |  '.html', '<table class="gridtable" width="800"><tr>');
-asciioutput(Trim(pDocumentName)  |  '.html', '<th>Dimension Name</th>
-                                                                                      <th>Category</th>
-                                                                                      <th>Purpose</th>
-                                                                                      <th>Attribute/Type</th>
-                                                                                      <th>Number<BR>of<BR>Elements</th>
-                                                                                      <th>Cubes</th>
-                                                                                       <th>Shared</th>
-                                                                                      <th>Subsets</th>');
+# --- Report Gridtable
+asciioutput(Trim(pDocumentName)  |  '.html', '<table class="gridtable" width="95%">');
+asciioutput(Trim(pDocumentName)  |  '.html', 
+    '<thead><tr><th>Dimension Name</th><th>Category</th><th>Purpose</th> <th>Attribute (Type)</th><th>Number<BR>of<BR>Elements</th><th>Cubes</th><th>Subsets</th></tr></thead><tbody>');
 
-# --- loop the dimensions nows
-noCubes = dimsiz('}Dimensions');
+# --- loop the dimensionss
+#noCubes = dimsiz('}Dimensions');
 fCounter = 1;
 dcounter = 0;
-keyd='';
-asciioutput(Trim(pOutputSite) | 'sales.csv', 'salesperson,sales');
-while (fCounter <= noCubes);
+asciioutput(Trim(pOutputSite)|'outputs\' | 'dimensionGraph.csv', 'dimension,elements,legend');
 
-                     V1 = dimnm('}Dimensions', fCounter);
-                     if(subst(V1,1,1)@<>'}');
-                        EE =  CellGetS(paDoc_CubeName , V1, 'Exclude');
-                     endif;
-	if (subst(Trim(V1),1,1)@<>'}' & EE @<>'Exclude');
-                              processesCategory = CellGetS(paDoc_CubeName , V1, 'Category');
-	         processPurpose =  CellGetS(paDoc_CubeName , V1, 'Purpose');
-                              processNotes =  CellGetS(paDoc_CubeName , V1, 'subsets');
-                              processCubes =  CellGetS(paDoc_CubeName , V1, 'Cubes');
+#while (fCounter <= noCubes);
+while (fCounter <= NoDims);
+   V1 = dimnm('}Dimensions', fCounter);
+   if(subst(V1,1,1)@<>'}');
+      EE =  CellGetS(paDoc_CubeName , V1, 'Exclude');
+   endif;
+   if (subst(Trim(V1),1,1)@<>'}' & EE @<>'Exclude');
+      processesCategory = CellGetS(paDoc_CubeName , V1, 'Category');
+      processPurpose =  CellGetS(paDoc_CubeName , V1, 'Purpose');
+      processNotes =  CellGetS(paDoc_CubeName , V1, 'subsets');
+      processCubes =  CellGetS(paDoc_CubeName , V1, 'Cubes');
 
-                             if (TRIM(processCubes)@='');
-                                      shrd = 'No';
-                             else;
-                             if (scan('<BR>', subst(trim(processCubes),5,99))=0);
-                                      shrd = 'No';
-                             else;
-                                      shrd ='Yes';
-                             endif;
-                              endif;
+      if (TRIM(processCubes)@='');
+         shrd = 'No';
+      else;
+         if (scan(subst(trim(processCubes),5,99),'}')=0);
+            shrd = 'No';
+         else;
+            shrd ='Yes';
+         endif;
+      endif;
 
-                               i = FileExists('}ElementAttributes_' | Trim(V1)  | '.dim');
-                               if (i>0);
-                                        ikiders = dimsiz('}ElementAttributes_' | Trim(V1));
-                                        NoAtts = NoAtts + ikiders;
-                               ic = 1;
-                               sA='';
-                               while (ic<=ikiders);
-                                        sE = dimnm('}ElementAttributes_' | Trim(V1), ic);
-                                        if (sE@<>'');
-                                                atype=DTYPE('}ElementAttributes_' | Trim(V1), Trim(sE));
-                                                if (atype@='AA');
-                                                         atype = '(Alias)';
-                                                elseif (atype@='AS');
-                                                         atype = '(String)';
-                                                 elseif (atype@='AN');
-                                                          atype='(Number)';
-                                                 else;
-                                                         atype = atype;
-                                                 endif;
-
-                                                sE = sE | '  ' | trim(atype);
-                                                 sA = sA | sE | '<BR>';
-                                        endif;
-                                        ic = ic + 1;
-                               end;
-                               endif;
-
-                               noElements = dimsiz(V1);           
-                               xnay = scan('<BR><BR><BR>',processNotes);   
-                               if (xnay=0);
-                                        xnay=long(processNotes);
-                               endif;
-                               fprocessNotes = subst(processNotes,1,xnay);             
-                              
-                              asciioutput(Trim(pDocumentName)  |  '.html', 
-                                                                         '<tr>
-                                                                          <td>' | V1 | ' </td>
-                                                                          <td>' |  processesCategory   | ' </td>
-                                                                          <td>' | processPurpose   | ' </td>
-                                                                          <td>' |  sA  | ' </td>
-                                                                          <td nowrap="nowrap"><center>' | str(noElements,3,0) | '</center> </td>
-                                                                          <td>' |  processCubes   | ' </td>
-                                                                          <td>' |  shrd   | ' </td>
-                                                                          <td valign="Top">' |  trim(fprocessNotes)   | ' </td>                                                                         
-                                                                          </tr>');
+      i = FileExists('}ElementAttributes_' | Trim(V1)  | '.dim');
+      if (i>0);
+         ikiders = dimsiz('}ElementAttributes_' | Trim(V1));
+         NoAtts = NoAtts + ikiders;
+         ic = 1;
+         sA='';
+         while (ic<=ikiders);
+            sE = dimnm('}ElementAttributes_' | Trim(V1), ic);
+            if (sE@<>'');
+               atype=DTYPE('}ElementAttributes_' | Trim(V1), Trim(sE));
+               if (atype@='AA');
+                  atype = '(Alias)';
+               elseif (atype@='AS');
+                  atype = '(String)';
+               elseif (atype@='AN');
+                  atype='(Number)';
+               else;
+                  atype = atype;
+               endif;
+               sE = sE | '  ' | trim(atype);
+               sA = sA | sE | '<BR>';
+            endif;
+            ic = ic + 1;
+         end;
+      endif;
+      noElements = dimsiz(V1);           
+      xnay = scan('<BR><BR><BR>',processNotes);   
+      if (xnay=0);
+         xnay=long(processNotes);
+      endif;
+      fprocessNotes = subst(processNotes,1,xnay);             
+      asciioutput(Trim(pDocumentName)  |  '.html', 
+            '<tr>
+            <td>' | V1 | ' </td>
+            <td>' |  processesCategory   | ' </td>
+            <td>' | processPurpose   | ' </td>
+            <td>' |  sA  | ' </td>
+            <td nowrap="nowrap"><center>' | str(noElements,3,0) | '</center> </td>
+            <td>' |  processCubes   | ' </td>
+#            <td>' |  shrd   | ' </td>
+            <td valign="Top">' |  trim(fprocessNotes)   | ' </td>                                                                         
+            </tr>');
                       
-                       dcounter = dcounter + 1;
-                       if (shrd@='Yes');
-                                asciioutput(Trim(pOutputSite) | 'sales.csv', str(dcounter,3,0), str(noElements,3,0));
-                                keyd = keyd | ' ' | str(dcounter,3,0) | ' - ' | Trim(V1);
-                       endif;
-
-                       Paiger = Paiger + 1;
-                       if (Paiger>5 & fCounter < noCubes);
-                                Paiger=0;
-                                asciioutput(Trim(pDocumentName)  |  '.html', '</table><p style="page-break-after:always;"></p>');
-                                asciioutput(Trim(pDocumentName)  |  '.html', '<center><img src="img/GV.png" ></center>');
-                                asciioutput(Trim(pDocumentName)  |  '.html', '<font size="2" face="verdana"><center><h2><b>' | Trim(pHeadingText) | ' TM1 Dimensions</h1></center>');
-                                asciioutput(Trim(pDocumentName)  |  '.html', '<font size="1" face="verdana"><center>Total Number of Dimensions: ' | STR(Nid,3,0));
-                                asciioutput(Trim(pDocumentName)  |  '.html', '<BR>Average Dimension Size: ' | str(abig,5,0) | '<BR>Largest Dimension: ' | lq | ', with ' | str(l,9,0) | ' indexes</center>');
-                                asciioutput(Trim(pDocumentName)  |  '.html', '<BR>');
-                                asciioutput(Trim(pDocumentName)  |  '.html', '<center><table class="gridtable" width="800"><tr>');
-                                asciioutput(Trim(pDocumentName)  |  '.html', '<th>Dimension Name</th>
-                                                                                      <th>Category</th>
-                                                                                      <th>Purpose</th>
-                                                                                      <th>Attribute/Type</th>
-                                                                                      <th>Number<BR>of<BR>Elements</th>
-                                                                                      <th>Cubes</th>
-                                                                                      <th>Shared</th>
-                                                                                      <th>Subsets</th>');
-                       endif;
-
-                       endif;
-                       fCounter = fCounter + 1;
-
+      dcounter = dcounter + 1;
+#      if (shrd@='Yes');
+      asciioutput(Trim(pOutputSite)|'outputs\' | 'dimensionGraph.csv', str(dcounter,3,0), str(noElements,3,0), str(dcounter,3,0) | ' - ' | Trim(V1));
+#      endif;
+   endif;
+   fCounter = fCounter + 1;
 end;
 
-asciioutput(Trim(pDocumentName)  |  '.html', '</table><BR>');
-asciioutput(Trim(pOutputSite) | 'keyed.html', '<font size="1" face="verdana"><center>' | keyd | '</center></font>');
+asciioutput(Trim(pDocumentName)  |  '.html', '</tbody></table><script type="text/javascript" src="js/d3.v4.min.js"></script><script type="text/javascript" src="js/DimViz001.js"></script></body>');
 
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\   Application Folders.html   \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#
 # ---- let's start the application folders section here
-paiger = 0;
 
 #pDocumentName = savedname;
 pDocumentName = pOutputSite|'Application Folders';
@@ -932,9 +905,8 @@ asciioutput(Trim(pDocumentName)  |  '.html', '<th>Folder Name</th>
                                                                           <td style="width:130px">' |  Trim(gotaccess) | ' </td>                                                                                                                                               
                                                                           </tr>');
                       nt = nt + 1;
-                      paiger = paiger + 1;
-                      if (paiger>2); 
-                        paiger = 0;
+#                      if (paiger>2); 
+#                        paiger = 0;
                         asciioutput(Trim(pDocumentName)  |  '.html', '</table><center>');
                         asciioutput(Trim(pDocumentName)  |  '.html', '<br><p style="page-break-after:always;"></p><center><img src="img/GV.png" ></center>');
                         asciioutput(Trim(pDocumentName)  |  '.html', '<font size="2" face="verdana"><h2><b><center>' | Trim(pHeadingText) | ' TM1 Application Folders<BR></h1><table class="gridtable" width="900"><tr>');
@@ -945,7 +917,7 @@ asciioutput(Trim(pDocumentName)  |  '.html', '<th>Folder Name</th>
                                                                                       <th>Type</th>
                                                                                       <th>Groups with Access<BR>To Folder</th>
                                                                                       ');
-                      endif;
+#                      endif;
 
              end;
 
