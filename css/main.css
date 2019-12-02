@@ -72,6 +72,14 @@ svg{
     fill: #1d2744;
 }
 
+.fileWrite{
+    border-bottom-style: double;
+}
+
+.tind{
+    text-indent: 5px;
+}
+
 .ui.icon.header:first-child {
     margin-top: 15px;
 }
