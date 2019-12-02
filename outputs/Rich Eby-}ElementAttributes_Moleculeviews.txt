@@ -1,3 +1,0 @@
-New Trials - Temp.vue
-Rich - Trials to remove.vue
-Studies w SAP issues.vue

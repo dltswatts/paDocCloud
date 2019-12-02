@@ -1,4 +1,0 @@
-Default.sub
-Local Currency and USD.sub
-Local Currency.sub
-USD.sub

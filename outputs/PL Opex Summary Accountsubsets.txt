@@ -1,2 +1,0 @@
-PL Opex Parent.sub
-PL Opex Summary.sub

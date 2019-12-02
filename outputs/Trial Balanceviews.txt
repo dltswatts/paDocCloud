@@ -1,6 +1,0 @@
-Adjustment Entry.vue
-Default.vue
-Drill Example.vue
-Reconcile - GL Tran to Consol FS.vue
-Upload Validation.vue
-z_Xfr2PL.vue

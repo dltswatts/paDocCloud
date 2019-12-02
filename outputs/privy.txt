@@ -1,6 +1,0 @@
-"}sys_paPro06","p0","Clinical Reporting","p1","Rich Eby-Clinical Reportingviews.txt","p2","Rich Eby"
-"}sys_paPro06","p0","Contract","p1","Rich Eby-Contractviews.txt","p2","Rich Eby"
-"}sys_paPro06","p0","CTEC","p1","Rich Eby-CTECviews.txt","p2","Rich Eby"
-"}sys_paPro06","p0","Invoice Actual","p1","Rich Eby-Invoice Actualviews.txt","p2","Rich Eby"
-"}sys_paPro06","p0","Profit and Loss","p1","Rich Eby-Profit and Lossviews.txt","p2","Rich Eby"
-"}sys_paPro06","p0","Trial Balance","p1","Dean.Watts-Trial Balanceviews.txt","p2","Dean.Watts"

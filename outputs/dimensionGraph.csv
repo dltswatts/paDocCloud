@@ -1,0 +1,42 @@
+dimension,elements,legend
+  1,149,  1 - DFM_Account
+  2,  3,  2 - DFM_Account_Mapping_Measures
+  3,135,  3 - DFM_Activity
+  4,  2,  4 - DFM_Attribute_Measures
+  5, 33,  5 - DFM_Book
+  6,  4,  6 - DFM_Book_Controls
+  7,  3,  7 - DFM_Consolidation_Measures
+  8, 25,  8 - DFM_Control
+  9,907,  9 - DFM_Entity
+ 10, 10, 10 - DFM_Entity_Mapping_Measures
+ 11,143, 11 - DFM_Function
+ 12,294, 12 - DFM_HyperionAcct
+ 13,352, 13 - DFM_HyperionEntity
+ 14,  2, 14 - DFM_IC_Measure
+ 15, 28, 15 - DFM_IC Measure_Test
+ 16,  7, 16 - DFM_JE_Actions
+ 17,  4, 17 - DFM_JE_Approver
+ 18,501, 18 - DFM_JE_Lines
+ 19, 22, 19 - DFM_JE_Measures
+ 20,  3, 20 - DFM_JE_Measures_Small
+ 21,169, 21 - DFM_JE_Num
+ 22,  3, 22 - DFM_JE_Type
+ 23, 11, 23 - DFM_Ledger
+ 24,619, 24 - DFM_Mapping_Accounts
+ 25,230, 25 - DFM_Mapping_Entities
+ 26,  2, 26 - DFM_Metrics
+ 27,654, 27 - DFM_Period
+ 28,579, 28 - DFM_Products
+ 29,  2, 29 - DFM_Reporting_Measures
+ 30,  2, 30 - DFM_Report Measures
+ 31, 24, 31 - DFM_Rollforward Type
+ 32, 16, 32 - DFM_Scenario
+ 33,  3, 33 - DFM_Signoff Actions
+ 34,  3, 34 - DFM_Submit
+ 35, 33, 35 - DFM_System_Elements
+ 36,  4, 36 - DFM_System_Measures
+ 37, 21, 37 - DFM_System_Process_Logs
+ 38,638, 38 - DFM_Trading_Partner
+ 39,  1, 39 - DFM_Value
+ 40,  1, 40 - DFM_Value String
+ 41,  2, 41 - DFM_Yes-No String

@@ -1,2 +1,0 @@
-Data Entry Select.sub
-Local Currencies Except USD.sub
