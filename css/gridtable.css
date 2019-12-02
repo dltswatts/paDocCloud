@@ -16,6 +16,7 @@ table.gridtable th {
 	border-style: solid;
 	border-color: #666666;
 	background-color: #dedede;
+    text-align: center;
 }
 table.gridtable td {
 	border-width: 1px;
@@ -39,4 +40,9 @@ td.thead{
 th.thhead{
     font-weight: bold;
     text-align: center;    
+}
+
+thead{
+    font-weight: bold;
+    text-align: center;
 }
