@@ -1,0 +1,648 @@
+[
+{
+    "@odata.context": "$metadata#Processes/$entity",
+    "@odata.etag": "W/\"fbf6eeb9e41b9ffa034833d08b5b43cb81e4c540\"",
+    "Name": "}sys_paDim01",
+    "HasSecurityAccess": false,
+    "PrologProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n# ---\r\npaDocDimName = '}sys_paDocDimensionsProcesses';\r\n\r\ngetfile = Trim(P0) | '.pro';\r\n\r\nDatasourceNameForClient=Trim(getfile);\r\nDatasourceNameForServer=Trim(getfile);\r\n\r\nuseTI = GetProcessName();",
+    "MetadataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n# --- if any of the cubes exist in any of the lines of the process, set it in the dim for later reference\r\n\r\ni=dimsiz('}Dimensions');\r\nii = 1;\r\nwhile (ii<=i);\r\n         sE = DIMNM('}Dimensions', ii);\r\n         if (subst(Trim(sE),1,1)@<>'}');\r\n                  DimensionElementInsert(paDocDimName, '', 'H-' | Trim(sE), 'C');\r\n                  x = scan(Trim(sE),trim(V1));\r\n                  if (x>0);\r\n                           DimensionElementInsert(paDocDimName, '', Trim(P0), 'N');\r\n                           DimensionElementComponentAdd(paDocDimName, 'H-' | Trim(sE), Trim(P0), 1);\r\n                  endif;\r\n          endif;\r\n           ii = ii +1;\r\nend;",
+    "DataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n\r\n",
+    "EpilogProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+    "DataSource": {
+        "Type": "ASCII",
+        "asciiDecimalSeparator": ".",
+        "asciiDelimiterChar": "}",
+        "asciiDelimiterType": "Character",
+        "asciiHeaderRecords": 0,
+        "asciiQuoteCharacter": "",
+        "asciiThousandSeparator": ",",
+        "dataSourceNameForClient": "C:\\paDoc\\Data\\Cube Load.pro",
+        "dataSourceNameForServer": "C:\\paDoc\\Data\\Cube Load.pro"
+    },
+    "Parameters": [
+        {
+            "Name": "P0",
+            "Prompt": "",
+            "Value": "sys_Control",
+            "Type": "String"
+        },
+        {
+            "Name": "pOutputSite",
+            "Prompt": "",
+            "Value": "",
+            "Type": "String"
+        }
+    ],
+    "Variables": [
+        {
+            "Name": "V1",
+            "Type": "String",
+            "Position": 1,
+            "StartByte": 0,
+            "EndByte": 0
+        }
+    ],
+    "Attributes": {
+        "Caption": "}sys_paDim01"
+    }
+},
+{
+    "@odata.context": "$metadata#Processes/$entity",
+    "@odata.etag": "W/\"789f8560ecc4d22f52db005a25b55973f95c0519\"",
+    "Name": "}sys_paDocExecutePros",
+    "HasSecurityAccess": false,
+    "PrologProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\nIF(pProcess@='}sys_paPro08');\r\n\r\n     ExecuteProcess(pProcess, 'pOutputSite', TRIM(pOutputSite));\r\n\r\nELSEIF(pProcess@='}sys_paRux01');\r\n\r\n     sRules = Trim(pRUX);\r\n\r\n     i = dimsiz('}Cubes');\r\n     ii =1;\r\n     v3=0;\r\n     sE='';\r\n     while (ii<=i);\r\n         sE = dimnm('}Cubes', ii);\r\n         if (subst(Trim(sE),1,1)@<>'}');\r\n                  v3 = FileExists(sRules | TRIM(sE) |'.RUX');\r\n                  if (v3>0);\r\n                           ExecuteProcess(pProcess,  'p0', Trim(sE), 'pRUX', Trim(pRUX));\r\n                  Endif;\r\n         endif;\r\n         ii = ii +1;\r\n     end;\r\n\r\nELSEIF(pProcess@='}sys_paPro04');\r\n\r\n     i = dimsiz('}Chores');\r\n     ii =1;\r\n     while (ii<=i);\r\n         sE = dimnm('}Chores', ii);\r\n         if (subst(Trim(sE),1,1)@<>'}');\r\n                  ExecuteProcess('}sys_paPro04', 'p0', Trim(sE));\r\n         endif;\r\n         ii = ii +1;\r\n     end;\r\n\r\nELSEIF(pProcess@='}sys_paPro05');\r\n\r\n     i = dimsiz('}dimensions');\r\n     ii =1;\r\n     while (ii<=i);\r\n         sE = dimnm('}dimensions', ii);\r\n         if (subst(Trim(sE),1,1)@<>'}');\r\n                  vfolder = pOutputSite | Trim(sE) | 'subsets.txt';\r\n                  if (FileExists(vfolder)>0);\r\n                           ExecuteProcess('}sys_paPro05', 'p0', Trim(sE),'pOutputSite',pOutputSite);\r\n                  endif;\r\n         endif;\r\n         ii = ii +1;\r\n     end;\r\n\r\nELSEIF(pProcess@='}sys_paPro06');\r\n\r\n     i = dimsiz('}cubes');\r\n     ii =1;\r\n     while (ii<=i);\r\n         sE = dimnm('}cubes', ii);\r\n         if (subst(Trim(sE),1,1)@<>'}');\r\n                  vfolder = pOutputSite | Trim(sE) | 'views.txt';\r\n                  if (FileExists(vfolder)>0);\r\n                           ExecuteProcess('}sys_paPro06', 'p0', Trim(sE),'pOutputSite',pOutputSite);\r\n                  endif;\r\n         endif;\r\n         ii = ii +1;\r\n     end;\r\n\r\n# ---discover all current views for each cube for each user\r\n     iD = dimsiz('}Clients');\r\n     iC = dimsiz('}Cubes');\r\n     iCC = 1;\r\n     iDer = 1;\r\n     while (iDer<=iD);\r\n         sD = Dimnm('}Clients', iDer);\r\n         if (subst(sD,1,1)@<>'}');                  \r\n                  vfolder = Trim(sD);\r\n                  if (FileExists(vfolder)>0);\r\n                           while (iCC<=iC);\r\n                                    sCube = Dimnm('}Cubes', iCC);\r\n                                    if (FileExists(vfolder | '/' | Trim(sCube) | '}vues')>0);\r\n                                         DimensionElementInsert('}sys_paDoc', '', Trim(sD), 'S');\r\n                                           # --- if we got here we have a  user folder to process     \r\n                                      ExecuteProcess('}sys_paPro06_p',\r\n                                  'p0', Trim(sCube),\r\n                                  'p1', TRim(sD) | '-' | Trim(sCube) | 'views.txt',\r\n                                  'p2', TRim(sD),\r\n                                  'pOutputSite', pOutputSite);\r\n                                      if(subst(Trim(sCube),1,1)@<>'}');      \r\n                                         asciioutput(pOutputSite | '\\privy.txt', '}sys_paPro06',  'p0', Trim(sCube),'p1', TRim(sD) | '-' | Trim(sCube) | 'views.txt','p2', TRim(sD));\r\n                                      endif;                        \r\n                                    endif;\r\n                                    iCC = iCC + 1;\r\n                            end;\r\n                           iCC = 1;\r\n                  endif;\r\n         endif;\r\n         iDer = iDer + 1;\r\n     end;\r\n\r\nELSE;\r\n\r\n     i = dimsiz('}Processes');\r\n     ii =1;\r\n     while (ii<=i);\r\n         sE = dimnm('}Processes', ii);\r\n         if (subst(Trim(sE),1,1)@<>'}');\r\n                  ExecuteProcess(pProcess, 'P0', Trim(sE), 'pOutputSite', pOutputSite);\r\n#                  asciioutput(pOutputSite|pProcess|'.cma',Trim(sE),pOutputSite);\r\n         endif;\r\n         ii = ii +1;\r\n     end;\r\n\r\nENDIF;\r\n\r\n\r\n",
+    "MetadataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+    "DataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+    "EpilogProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+    "DataSource": {
+        "Type": "None"
+    },
+    "Parameters": [
+        {
+            "Name": "pOutputSite",
+            "Prompt": "",
+            "Value": "",
+            "Type": "String"
+        },
+        {
+            "Name": "pRUX",
+            "Prompt": "",
+            "Value": "",
+            "Type": "String"
+        },
+        {
+            "Name": "pProcess",
+            "Prompt": "",
+            "Value": "",
+            "Type": "String"
+        }
+    ],
+    "Variables": [],
+    "Attributes": {
+        "Caption": "}sys_paDocExecutePros"
+    }
+},
+{
+    "@odata.context": "$metadata#Processes/$entity",
+    "@odata.etag": "W/\"3ec4366479635928157db8cbcb05a8eff3474016\"",
+    "Name": "}sys_paPro01",
+    "HasSecurityAccess": false,
+    "PrologProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n# --- This Process populates the }sys_paDocCubesProcesses with all Processes and any cubes used by them\r\n\r\npaDocDimName = '}sys_paDocCubesProcesses';\r\n\r\ngetfile = Trim(P0) | '.pro';\r\n\r\nDatasourceNameForClient=Trim(getfile);\r\nDatasourceNameForServer=Trim(getfile);\r\n\r\nuseTI = GetProcessName();",
+    "MetadataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n# --- if any of the cubes exist in any of the lines of the process, set it in the dim for later reference\r\n\r\ni=dimsiz('}Cubes');\r\nii = 1;\r\nwhile (ii<=i);\r\n         sE = DIMNM('}Cubes', ii);\r\n         if (subst(Trim(sE),1,1)@<>'}');\r\n                  DimensionElementInsert(paDocDimName, '', 'H-' | Trim(sE), 'C');\r\n                  x = scan(Trim(sE),trim(V1));\r\n                  if (x>0);\r\n                           DimensionElementInsert(paDocDimName, '', Trim(P0), 'N');\r\n                           DimensionElementComponentAdd(paDocDimName, 'H-' | Trim(sE), Trim(P0), 1);\r\n                  endif;\r\n          endif;\r\n           ii = ii +1;\r\nend;",
+    "DataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n\r\n",
+    "EpilogProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+    "DataSource": {
+        "Type": "ASCII",
+        "asciiDecimalSeparator": ".",
+        "asciiDelimiterChar": "}",
+        "asciiDelimiterType": "Character",
+        "asciiHeaderRecords": 0,
+        "asciiQuoteCharacter": "",
+        "asciiThousandSeparator": ",",
+        "dataSourceNameForClient": "C:\\paDoc\\Data\\Cube Load.pro",
+        "dataSourceNameForServer": "C:\\paDoc\\Data\\Cube Load.pro"
+    },
+    "Parameters": [
+        {
+            "Name": "P0",
+            "Prompt": "",
+            "Value": "sys_Control",
+            "Type": "String"
+        },
+        {
+            "Name": "pOutputSite",
+            "Prompt": "",
+            "Value": "",
+            "Type": "String"
+        }
+    ],
+    "Variables": [
+        {
+            "Name": "V1",
+            "Type": "String",
+            "Position": 1,
+            "StartByte": 0,
+            "EndByte": 0
+        }
+    ],
+    "Attributes": {
+        "Caption": "}sys_paPro01"
+    }
+},
+{
+    "@odata.context": "$metadata#Processes/$entity",
+    "@odata.etag": "W/\"5818f1022a48aa0a11b126c9750b388a9a1c655a\"",
+    "Name": "}sys_paPro02",
+    "HasSecurityAccess": false,
+    "PrologProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n# This process populates the }sys_paDocProcessesProcesses dimension with all non-Control Processes\r\n\r\npaDocDimName = '}sys_paDocProcessesProcesses';\r\n\r\ngetfile = Trim(P0) | '.pro';\r\n\r\nDatasourceNameForClient=Trim(getfile);\r\nDatasourceNameForServer=Trim(getfile);\r\n\r\nuseTI = GetProcessName();",
+    "MetadataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n# --- if any of the processes exist in any of the lines of the process, set it in the dim for later reference\r\n\r\ni=dimsiz('}Processes');\r\nii = 1;\r\nwhile (ii<=i);\r\n         sE = DIMNM('}Processes', ii);\r\n         if (subst(Trim(sE),1,1)@<>'}');\r\n                  DimensionElementInsert(paDocDimName, '', 'H-' | Trim(sE), 'C');\r\n                  x = scan(Trim(sE),trim(V1));\r\n                  if (x>0);\r\n                           DimensionElementInsert(paDocDimName, '', Trim(P0), 'N');\r\n                           DimensionElementComponentAdd(paDocDimName, 'H-' | Trim(sE), Trim(P0), 1);\r\n                  endif;\r\n          endif;\r\n           ii = ii +1;\r\nend;",
+    "DataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n\r\n",
+    "EpilogProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+    "DataSource": {
+        "Type": "ASCII",
+        "asciiDecimalSeparator": ".",
+        "asciiDelimiterChar": "}",
+        "asciiDelimiterType": "Character",
+        "asciiHeaderRecords": 0,
+        "asciiQuoteCharacter": "",
+        "asciiThousandSeparator": ",",
+        "dataSourceNameForClient": "C:\\paDoc\\Data\\Cube Load.pro",
+        "dataSourceNameForServer": "C:\\paDoc\\Data\\Cube Load.pro"
+    },
+    "Parameters": [
+        {
+            "Name": "P0",
+            "Prompt": "",
+            "Value": "Cube Load - Budget Prem_Loss",
+            "Type": "String"
+        },
+        {
+            "Name": "pOutputSite",
+            "Prompt": "",
+            "Value": "",
+            "Type": "String"
+        }
+    ],
+    "Variables": [
+        {
+            "Name": "V1",
+            "Type": "String",
+            "Position": 1,
+            "StartByte": 0,
+            "EndByte": 0
+        }
+    ],
+    "Attributes": {
+        "Caption": "}sys_paPro02"
+    }
+},
+{
+    "@odata.context": "$metadata#Processes/$entity",
+    "@odata.etag": "W/\"906f64f6b46f6e07cba5d3d995859cd8ceb83898\"",
+    "Name": "}sys_paPro03",
+    "HasSecurityAccess": false,
+    "PrologProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n# This process populates the }sys_paDocProcessesFiles dimension with Processes and source/target files referenced\r\n\r\npaDocCubeName = '}sys_paDoc';\r\n\r\npaDocDimName = '}sys_paDocProcessesFiles';\r\n\r\ngetfile = Trim(P0) | '.pro';\r\n\r\nDatasourceNameForClient=Trim(getfile);\r\nDatasourceNameForServer=Trim(getfile);\r\n\r\npaPro = GetProcessName();\r\n\r\nlinecount = 0;\r\n\r\n CellPutS('', pCube, Trim(P0), 'Notes');\r\n",
+    "MetadataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n#if (Trim(P0)@='}sys_paPro01' % Trim(P0)@='}sys_paDim01' % Trim(P0)@='}sys_DocExecute_Pros');\r\n#         itemskip;\r\n#endif;\r\n#if (Trim(P0)@='}sys_paPro02' % Trim(P0)@='}sys_paPro_04' % Trim(P0)@='}sys_paPro03');\r\n#         itemskip;\r\n#endif;\r\n#if (Trim(P0)@='}sys_paPro05' % Trim(P0)@='}sys_paPro08' % Trim(P0)@='}sys_paRux01');\r\n#         itemskip;\r\n#endif;\r\n#if (Trim(P0)@='}sys_paPro06' % Trim(P0)@='}sys_paPro06_p' % Trim(P0)@='}sys_paPro07');\r\n#         itemskip;\r\n#endif;\r\nDimensionElementInsert(paDocDimName, '', Trim(P0), 'C');\r\n#asciioutput(pOutputSite | paDocDimName | '.cma',Trim(P0),V1);\r\n\r\nif (scan('.txt',Trim(V1))>0);\r\n                DimensionElementInsert(paDocDimName, '', 'txt - ' | Trim(V1), 'N');\r\n\tDimensionElementComponentAdd(paDocDimName, Trim(P0), 'txt - ' | Trim(V1), 1);\r\nendif;\r\nif (scan('.csv',Trim(V1))>0);\r\n                      DimensionElementInsert(paDocDimName, '', 'csv - ' | Trim(V1), 'N');\r\n\tDimensionElementComponentAdd(paDocDimName, Trim(P0), 'txt - ' | Trim(V1), 1);\r\nendif;\r\nif (scan('.cma',Trim(V1))>0);\r\n                      DimensionElementInsert(paDocDimName, '', 'cma - ' | Trim(V1), 'N');\r\n\tDimensionElementComponentAdd(paDocDimName, Trim(P0), 'txt - ' | Trim(V1), 1);\r\nendif;\r\n\r\nif (scan('ASCIIOutput',Trim(V1))>0 % scan('TextOutput', Trim(V1))>0);\r\n         getit = CellGetS(paDocCubeName, Trim(P0), 'Notes');\r\n         if (trim(getit)@<>'');\r\n                  putit = trim(getit) | '<BR>' | Trim(V1);\r\n         else;\r\n                  putit = TRIM(V1);\r\n         endif;\r\n        CellPutS(Trim(putit), paDocCubeName, Trim(P0), 'Notes');\r\nendif;\r\n\r\nlinecount = linecount + 1;\r\n\r\n\r\n",
+    "DataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n\r\n",
+    "EpilogProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n\r\n# --- save linecount\r\n\r\nz = str(linecount,9,0);\r\nCellPutS(Trim(z), paDocCubeName, Trim(Trim(P0)), 'Size');\r\n",
+    "DataSource": {
+        "Type": "ASCII",
+        "asciiDecimalSeparator": ".",
+        "asciiDelimiterChar": "}",
+        "asciiDelimiterType": "Character",
+        "asciiHeaderRecords": 0,
+        "asciiQuoteCharacter": "",
+        "asciiThousandSeparator": ",",
+        "dataSourceNameForClient": "E:\\TM1 Servers\\paDoc\\Data\\flag.txt",
+        "dataSourceNameForServer": "E:\\TM1 Servers\\paDoc\\Data\\flag.txt"
+    },
+    "Parameters": [
+        {
+            "Name": "P0",
+            "Prompt": "",
+            "Value": "Process",
+            "Type": "String"
+        },
+        {
+            "Name": "pCube",
+            "Prompt": "",
+            "Value": "}sys_paDoc",
+            "Type": "String"
+        },
+        {
+            "Name": "pOutputSite",
+            "Prompt": "",
+            "Value": "",
+            "Type": "String"
+        }
+    ],
+    "Variables": [
+        {
+            "Name": "V1",
+            "Type": "String",
+            "Position": 1,
+            "StartByte": 0,
+            "EndByte": 0
+        }
+    ],
+    "Attributes": {
+        "Caption": "}sys_paPro03"
+    }
+},
+{
+    "@odata.context": "$metadata#Processes/$entity",
+    "@odata.etag": "W/\"b65b0c3cdaacb8330261bc6f231838fcf1a54245\"",
+    "Name": "}sys_paPro04",
+    "HasSecurityAccess": false,
+    "PrologProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n# This process populates the }sys_paDocChoresProcesses dimension with the Chores and Processes run by them\r\n\r\npaDocDimName = '}sys_paDocChoresProcesses';\r\n\r\ngetfile = Trim(P0) | '.cho';\r\n\r\nDatasourceNameForClient=Trim(getfile);\r\nDatasourceNameForServer=Trim(getfile);\r\n\r\nl=0;\r\nsdt=0;\r\nsSDT = 'Not Set';\r\n\r\n\r\n",
+    "MetadataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n\r\n# --- insert the chore name\r\nDimensionElementInsert(paDocDimName, '', Trim(P0), 'C');\r\n\r\niNumberofProcesses = DIMSIZ('}Processes');\r\niCounter = 1;\r\nWhile (iCounter<=iNumberofProcesses);\r\n         sE = DIMNM('}Processes', iCOunter);\r\n         if (SCAN(TRIM(sE), TRIM(V1))>0);\r\n                     if (Trim(sE)@=Trim(P0));\r\n                          DimensionElementInsert(paDocDimName, '', 'P-' |Trim(sE), 'N');\r\n\t          DimensionElementComponentAdd(paDocDimName, Trim(P0), 'P-' | Trim(sE), 1);\r\n                     else;\r\n                          DimensionElementInsert(paDocDimName, '', Trim(sE), 'N');\r\n\t          DimensionElementComponentAdd(paDocDimName, Trim(P0), Trim(sE), 1);\r\n                     Endif;\r\n         endif;\r\n         iCounter = iCounter +1;\r\nend;\r\n\r\n\r\nif (l=0);\r\nfoo = Trim(V1);\r\nl=l+1;\r\nelse;\r\nl=0;\r\nendif;\r\n\r\nif (sdt=0);\r\n         if (scan(Trim(P0), V1)>0);\r\n                  sdt=1;\r\n          endif;\r\nelseif (sdt=1);\r\n          sSDT = V1;\r\n          sdt=2;\r\nendif;\r\n\r\n\r\n",
+    "DataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n\r\n",
+    "EpilogProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n\r\nx=scan(',',foo);\r\ny=subst(foo,(x+1),9);\r\nif (y@='0');\r\ns = '';\r\nelse;\r\ns='Active';\r\nendif;\r\n\r\nx=scan(',',sSDT);\r\ny=subst(sSDT,(x+1),15);\r\nz= subst(y,5,2) | '/' | subst(y,7,2) | '/' | subst(y,1,4);\r\nif (DIMIX('}Chores', Trim(P0))>0);\r\n         CellPutS(s, '}sys_paDoc', Trim(P0), 'Status');\r\n         CellPutS(z, '}sys_paDoc', Trim(P0), 'Start Date Time');\r\nendif;",
+    "DataSource": {
+        "Type": "ASCII",
+        "asciiDecimalSeparator": ".",
+        "asciiDelimiterChar": "}",
+        "asciiDelimiterType": "Character",
+        "asciiHeaderRecords": 0,
+        "asciiQuoteCharacter": "",
+        "asciiThousandSeparator": ",",
+        "dataSourceNameForClient": "E:\\TM1 Servers\\paDoc\\Data\\flag.txt",
+        "dataSourceNameForServer": "E:\\TM1 Servers\\paDoc\\Data\\flag.txt"
+    },
+    "Parameters": [
+        {
+            "Name": "P0",
+            "Prompt": "",
+            "Value": "Cube Load - Budget Prem_Loss",
+            "Type": "String"
+        }
+    ],
+    "Variables": [
+        {
+            "Name": "V1",
+            "Type": "String",
+            "Position": 1,
+            "StartByte": 0,
+            "EndByte": 0
+        }
+    ],
+    "Attributes": {
+        "Caption": "}sys_paPro04"
+    }
+},
+{
+    "@odata.context": "$metadata#Processes/$entity",
+    "@odata.etag": "W/\"a51c2c51919b3aa2ca3fc944f7a988f30a5d8917\"",
+    "Name": "}sys_paPro05",
+    "HasSecurityAccess": false,
+    "PrologProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n# This process populates the subset field in the }sys_paDoc cube for all dimensions that have subsets\r\n\r\ngetfile = pOutputSite | Trim(P0) | 'subsets.txt';\r\n\r\nDatasourceNameForClient=Trim(getfile);\r\nDatasourceNameForServer=Trim(getfile);\r\n\r\npaDocCubeName = '}sys_paDoc';\r\n\r\nCellPutS('', paDocCubeName, Trim(P0), 'subsets');\r\n\r\n\r\n\r\n",
+    "MetadataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\nif (subst(TRIM(V1),1,1)@<>'}' % subst(TRIM(V1),1,1)@<>' ');\r\n           getIt = CellGets(paDocCubeName, Trim(P0), 'subsets');   \r\n           CellPutS(trim(getIt)  | TRIM(V1) | '<BR> ' , paDocCubeName, Trim(P0), 'subsets');\r\nelse;\r\n           itemskip;\r\nendif;\r\n\r\n\r\n\r\n",
+    "DataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n\r\n",
+    "EpilogProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n",
+    "DataSource": {
+        "Type": "ASCII",
+        "asciiDecimalSeparator": ".",
+        "asciiDelimiterChar": "}",
+        "asciiDelimiterType": "Character",
+        "asciiHeaderRecords": 0,
+        "asciiQuoteCharacter": "",
+        "asciiThousandSeparator": ",",
+        "dataSourceNameForClient": "E:\\TM1 Servers\\paDoc\\Data\\flag.txt",
+        "dataSourceNameForServer": "E:\\TM1 Servers\\paDoc\\Data\\flag.txt"
+    },
+    "Parameters": [
+        {
+            "Name": "P0",
+            "Prompt": "",
+            "Value": "Period",
+            "Type": "String"
+        },
+        {
+            "Name": "pOutputSite",
+            "Prompt": "",
+            "Value": "",
+            "Type": "String"
+        }
+    ],
+    "Variables": [
+        {
+            "Name": "V1",
+            "Type": "String",
+            "Position": 1,
+            "StartByte": 0,
+            "EndByte": 0
+        }
+    ],
+    "Attributes": {
+        "Caption": "}sys_paPro05"
+    }
+},
+{
+    "@odata.context": "$metadata#Processes/$entity",
+    "@odata.etag": "W/\"31938d186a4bd1eec8cc96915539ed0bb9431537\"",
+    "Name": "}sys_paPro06",
+    "HasSecurityAccess": false,
+    "PrologProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n# This process populates the View data in the }sys_paDoc cube for all Cubes with views.\r\n\r\n# --- sets the data source to the name of the cube view list file we are processing\r\n\r\ngetfile = pOutputSite | Trim(P0) | 'views.txt';\r\n\r\nDatasourceNameForClient=Trim(getfile);\r\nDatasourceNameForServer=Trim(getfile);\r\n\r\npaDocCubeName = '}sys_paDoc';\r\n\r\n# --- clear out the list of views for this cube in the docoumentor cube\r\n\r\nCellPutS('', paDocCubeName, Trim(P0), 'views');\r\n\r\ni=0;\r\n\r\n\r\n\r\n",
+    "MetadataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\nif (subst(TRIM(V1),1,1)@<>'}' % subst(TRIM(V1),1,1)@<>' ');\r\n           getIt = CellGets(paDocCubeName, Trim(P0), 'views');   \r\n           if (i>2);\r\n                    i = 0;\r\n                    CellPutS(trim(getIt)  | TRIM(V1) | '<BR> ' ,paDocCubeName, Trim(P0), 'views');\r\n            else;\r\n                    CellPutS(trim(getIt)  | TRIM(V1) | ', ' ,paDocCubeName, Trim(P0), 'views');\r\n                     i=i+1;\r\n            endif;\r\nendif;\r\n\r\n\r\n\r\n",
+    "DataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n\r\n",
+    "EpilogProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n",
+    "DataSource": {
+        "Type": "ASCII",
+        "asciiDecimalSeparator": ".",
+        "asciiDelimiterChar": "}",
+        "asciiDelimiterType": "Character",
+        "asciiHeaderRecords": 0,
+        "asciiQuoteCharacter": "",
+        "asciiThousandSeparator": ",",
+        "dataSourceNameForClient": "E:\\TM1 Servers\\paDoc\\Data\\flag.txt",
+        "dataSourceNameForServer": "E:\\TM1 Servers\\paDoc\\Data\\flag.txt"
+    },
+    "Parameters": [
+        {
+            "Name": "P0",
+            "Prompt": "",
+            "Value": "Period",
+            "Type": "String"
+        },
+        {
+            "Name": "pOutputSite",
+            "Prompt": "",
+            "Value": "",
+            "Type": "String"
+        }
+    ],
+    "Variables": [
+        {
+            "Name": "V1",
+            "Type": "String",
+            "Position": 1,
+            "StartByte": 0,
+            "EndByte": 0
+        }
+    ],
+    "Attributes": {
+        "Caption": "}sys_paPro06"
+    }
+},
+{
+    "@odata.context": "$metadata#Processes/$entity",
+    "@odata.etag": "W/\"3a5f7156703c6c084de9ba4c87f9ae2296fb1904\"",
+    "Name": "}sys_paPro06_p",
+    "HasSecurityAccess": false,
+    "PrologProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n# This process populates the MeasureName value in the }sys_paDoc cube for all Cubes\r\n\r\n# --- sets the data source to the name of the cube view list file we are processing\r\n\r\ngetfile = pOutputSite | Trim(P1);\r\n\r\nDatasourceNameForClient=Trim(getfile);\r\nDatasourceNameForServer=Trim(getfile);\r\n\r\npaDocCubeName = '}sys_paDoc';\r\n\r\n# --- clear out the list of views for this cube in the }sys_paDoc cube\r\n\r\nMeasureName = TRIM(p2);\r\n\r\nCellPutS('', paDocCubeName, Trim(P0), MeasureName);\r\n\r\ni=0;\r\n\r\n\r\n\r\n",
+    "MetadataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n \r\nif (subst(TRIM(V1),1,1)@<>'}' % subst(TRIM(V1),1,1)@<>' ');\r\n           getIt = CellGets(paDocCubeName, Trim(P0), MeasureName);   \r\n           if (i>2);\r\n                    i = 0;\r\n                    CellPutS(trim(getIt)  | TRIM(V1) | '<BR> ' ,paDocCubeName, Trim(P0), MeasureName);\r\n            else;\r\n                    CellPutS(trim(getIt)  | TRIM(V1) | ', ' ,paDocCubeName, Trim(P0), MeasureName);\r\n                     i=i+1;\r\n            endif;\r\nendif;\r\n\r\n\r\n\r\n",
+    "DataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n\r\n",
+    "EpilogProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n",
+    "DataSource": {
+        "Type": "ASCII",
+        "asciiDecimalSeparator": ".",
+        "asciiDelimiterChar": "}",
+        "asciiDelimiterType": "Character",
+        "asciiHeaderRecords": 0,
+        "asciiQuoteCharacter": "",
+        "asciiThousandSeparator": ",",
+        "dataSourceNameForClient": "E:\\TM1 Servers\\paDoc\\Data\\flag.txt",
+        "dataSourceNameForServer": "E:\\TM1 Servers\\paDoc\\Data\\flag.txt"
+    },
+    "Parameters": [
+        {
+            "Name": "P0",
+            "Prompt": "",
+            "Value": "Cube",
+            "Type": "String"
+        },
+        {
+            "Name": "P1",
+            "Prompt": "",
+            "Value": "File",
+            "Type": "String"
+        },
+        {
+            "Name": "P2",
+            "Prompt": "",
+            "Value": "Client",
+            "Type": "String"
+        },
+        {
+            "Name": "pOutputSite",
+            "Prompt": "",
+            "Value": "",
+            "Type": "String"
+        }
+    ],
+    "Variables": [
+        {
+            "Name": "V1",
+            "Type": "String",
+            "Position": 1,
+            "StartByte": 0,
+            "EndByte": 0
+        }
+    ],
+    "Attributes": {
+        "Caption": "}sys_paPro06_p"
+    }
+},
+{
+    "@odata.context": "$metadata#Processes/$entity",
+    "@odata.etag": "W/\"8b8fab52e97937694ab41a46e507180800f4cb62\"",
+    "Name": "}sys_paPro07",
+    "HasSecurityAccess": false,
+    "PrologProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n## This process populates the sys_paDocAppFolders dimension with the application folder names\r\n\r\ngetfile = pOutputSite | 'applicationfolders.txt';\r\n\r\npaDocDimName = '}sys_paDocAppFolders';\r\n\r\nDatasourceNameForClient=Trim(getfile);\r\nDatasourceNameForServer=Trim(getfile);\r\n\r\n\r\n\r\n\r\n\r\n",
+    "MetadataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\nif (subst(TRIM(V1),1,1)@<>'}' % subst(TRIM(V1),1,1)@<>' ');               \r\n           DimensionElementInsert(paDocDimName, '', TRIM(V1), 'N');\r\nendif;\r\n\r\n\r\n\r\n",
+    "DataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n\r\n",
+    "EpilogProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n",
+    "DataSource": {
+        "Type": "ASCII",
+        "asciiDecimalSeparator": ".",
+        "asciiDelimiterChar": "}",
+        "asciiDelimiterType": "Character",
+        "asciiHeaderRecords": 0,
+        "asciiQuoteCharacter": "",
+        "asciiThousandSeparator": ",",
+        "dataSourceNameForClient": "E:\\TM1 Servers\\paDoc\\Data\\flag.txt",
+        "dataSourceNameForServer": "E:\\TM1 Servers\\paDoc\\Data\\flag.txt"
+    },
+    "Parameters": [
+        {
+            "Name": "pOutputSite",
+            "Prompt": "",
+            "Value": "",
+            "Type": "String"
+        },
+        {
+            "Name": "P0",
+            "Prompt": "",
+            "Value": "",
+            "Type": "String"
+        }
+    ],
+    "Variables": [
+        {
+            "Name": "V1",
+            "Type": "String",
+            "Position": 1,
+            "StartByte": 0,
+            "EndByte": 0
+        }
+    ],
+    "Attributes": {
+        "Caption": "}sys_paPro07"
+    }
+},
+{
+    "@odata.context": "$metadata#Processes/$entity",
+    "@odata.etag": "W/\"8fd3698aa48d5f08344012f0fff12b0f2b6282e4\"",
+    "Name": "}sys_paPro08",
+    "HasSecurityAccess": false,
+    "PrologProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n## This process creates the 'flare' graphics used to show the relative size of the cubes\r\n\r\n# --- checks cube sizes\r\ngetfile = pOutputSite | 'assessedcubs.txt';\r\n\r\nDatasourceNameForClient=Trim(getfile);\r\nDatasourceNameForServer=Trim(getfile);\r\n\r\na=0;\r\ncubeNumber = 1;\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "MetadataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n\r\nif (a=0);\r\n         asciioutput(pOutputSite | 'flare.csv', 'id,value');\r\n         asciioutput(pOutputSite | 'flare.csv', 'flare');\r\n         asciioutput(pOutputSite | 'flare.csv', 'flare.1');\r\n         asciioutput(pOutputSite | 'flare.html', '<font size=\"1\" face=\"verdana\"><center>');\r\na=1;\r\nendif;\r\nif (scan('}', V1)=0 & scan('byte', V1)=0);\r\n\r\na = scan('.', TRIM(V1));\r\nb = subst(TRIM(V1),1,(a-1));\r\n\r\nd = subst(TRIM(V1),(a+4), LONG(TRIM(V1)));\r\nnd = numbr(d);\r\nnd = nd/2;\r\nsd = str(nd,9,0);\r\nc = str(cubeNumber,3,0) |',' | TRIM(sd);\r\n# --- structure the b\r\nsl=scan('\\', Trim(b));\r\nif (sl>0);\r\n        newb = subst(Trim(b), (sl+1), long(b));\r\nendif;\r\nsl=scan('\\', Trim(newb));\r\nif (sl>0);\r\n        newb = subst(Trim(newb), (sl+1), long(newb));\r\nendif;\r\nsl=scan('\\', Trim(newb));\r\nif (sl>0);\r\n        newb = subst(Trim(newb), (sl+1), long(newb));\r\nendif;\r\nsl=scan('\\', Trim(newb));\r\nif (sl>0);\r\n        newb = subst(Trim(newb), (sl+1), long(newb));\r\nendif;\r\n\r\n         sR = 'flare.1.' | TRIM(c);\r\n         asciioutput(pOutputSite | 'flare.csv', sR);        \r\n         asciioutput(pOutputSite | 'flare.html', str(cubeNumber,3,0) | ' - ' | newb);\r\n         cubeNumber = cubeNumber  + 1;\r\nendif;\r\n\r\n\r\n\r\n",
+    "DataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n\r\n",
+    "EpilogProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n",
+    "DataSource": {
+        "Type": "ASCII",
+        "asciiDecimalSeparator": ".",
+        "asciiDelimiterChar": "\t",
+        "asciiDelimiterType": "Character",
+        "asciiHeaderRecords": 0,
+        "asciiQuoteCharacter": "",
+        "asciiThousandSeparator": ",",
+        "dataSourceNameForClient": "E:\\TM1 Servers\\paDoc\\Data\\flag.txt",
+        "dataSourceNameForServer": "E:\\TM1 Servers\\paDoc\\Data\\flag.txt"
+    },
+    "Parameters": [
+        {
+            "Name": "pOutputSite",
+            "Prompt": "",
+            "Value": "E:\\TM1 Servers\\paDoc\\Outputs",
+            "Type": "String"
+        }
+    ],
+    "Variables": [
+        {
+            "Name": "V1",
+            "Type": "String",
+            "Position": 1,
+            "StartByte": 0,
+            "EndByte": 0
+        }
+    ],
+    "Attributes": {
+        "Caption": "}sys_paPro08"
+    }
+},
+{
+    "@odata.context": "$metadata#Processes/$entity",
+    "@odata.etag": "W/\"9676d4c6f662794b01ae78c582fcfcc850831fdf\"",
+    "Name": "}sys_paRux01",
+    "HasSecurityAccess": false,
+    "PrologProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n# --- This process populates the }sys_paDocRUX dimension with the cubes that have rules (Source) and the cubes those rules reference\r\n\r\npaDocDimName = '}sys_paDocRUX';\r\n\r\nsRules = Trim(pRUX);\r\n\r\ngetfile = sRules | Trim(P0) | '.RUX';\r\n\r\nDatasourceNameForClient=Trim(getfile);\r\nDatasourceNameForServer=Trim(getfile);\r\n\r\nDimensionElementInsert(paDocDimName, '', 'Source Cube: ' |Trim(P0), 'C');",
+    "MetadataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n\r\nif (scan('DB(',V1)>0);\r\n# --- we got a db reference\r\n         x = scan('DB(',V1);\r\n         y = long(V1);\r\n         z = subst(V1,(x+4),y-1);\r\n         a = scan(',',z);\r\n         b = subst(z,1,(a-2));\r\n         DimensionElementInsert(paDocDimName, '', b, 'N');\r\n         DimensionElementComponentAdd(paDocDimName,  'Source Cube: ' | Trim(P0), Trim(b), 1);\r\nendif;",
+    "DataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n\r\n",
+    "EpilogProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+    "DataSource": {
+        "Type": "ASCII",
+        "asciiDecimalSeparator": ".",
+        "asciiDelimiterChar": "}",
+        "asciiDelimiterType": "Character",
+        "asciiHeaderRecords": 0,
+        "asciiQuoteCharacter": "",
+        "asciiThousandSeparator": ",",
+        "dataSourceNameForClient": "E:\\TM1 Servers\\paDoc\\Data\\flag.txt",
+        "dataSourceNameForServer": "E:\\TM1 Servers\\paDoc\\Data\\flag.txt"
+    },
+    "Parameters": [
+        {
+            "Name": "P0",
+            "Prompt": "",
+            "Value": "",
+            "Type": "String"
+        },
+        {
+            "Name": "pRUX",
+            "Prompt": "",
+            "Value": "",
+            "Type": "String"
+        }
+    ],
+    "Variables": [
+        {
+            "Name": "V1",
+            "Type": "String",
+            "Position": 1,
+            "StartByte": 0,
+            "EndByte": 0
+        }
+    ],
+    "Attributes": {
+        "Caption": "}sys_paRux01"
+    }
+},
+{
+    "@odata.context": "$metadata#Processes/$entity",
+    "@odata.etag": "W/\"3a5f7156703c6c084de9ba4c87f9ae2296fb1904\"",
+    "Name": "sys_paDoc",
+    "HasSecurityAccess": false,
+    "PrologProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n#~~~~~~~~~~~~~~~~  Start Program Description ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#\r\n# This process creates the HTML paDoc report                                                                              #\r\n#~~~~~~~~~~~~~~~~  End Program Description ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#\r\n\r\n#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#\r\n#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  Maintenance Log ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#\r\n#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#\r\n# ----Date-----|----Programmer---|---------------Description---------------------------------------------------------------------------------------------------#\r\n#   Mar-2017         Jim Miller    -  Created framework.                                                                                                  # \r\n#   Apr-2018     Dean Watts    - Revised structure and re-wrote output documents                                                    #\r\n#   Nov-2019   Dean Watts    - Added Content-Security-Policy for each page.  Introduced css elements                  #\r\n#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#\r\n\r\n# --- Declares\r\nDatasourceASCIIQuoteCharacter='';\r\n\r\n# --- Cubes\r\npaDoc_CubeName = '}sys_paDoc';\r\n\r\n# --- Dimensions\r\npaDoc_000_DimName = '}sys_paDoc';\r\npaDoc_001_DimName = '}sys_paDocRUX';\r\npaDoc_002_DimName = '}sys_paDocCubesProcesses';\r\npaDoc_003_DimName = '}sys_paDocDimensionsProcesses';\r\npaDoc_004_DimName = '}sys_paDocProcessesProcesses';\r\npaDoc_005_DimName = '}sys_paDocProcessesFiles';\r\npaDoc_006_DimName = '}sys_paDocChoresProcesses';\r\npaDoc_007_DimName = '}sys_paDocAppFolders';\r\npaDoc_008_DimName = '}sys_paDocPictureDriver';\r\n\r\n# --- constants\r\nNotFound = 0;\r\nReRunSetup = 1;\r\n\r\npDocumentName = Trim(pOutputSite) | Trim(pDocumentName);\r\nsavedname = pDocumentName;\r\n\r\n# --- make sure the documentor dimensions are built and available\r\n\r\nif (pSetting=ReRunSetup);\r\n         ExecuteProcess('sys_paDoc_Setup','pRUX',Trim(pRUX), 'pOutputSite', TRIM(pOutputSite) | 'outputs\\');\r\nEndif;\r\n\r\n# --- do the support dimensions exist? if not create it\r\n\r\n# --- start of main processing\r\n\r\n# --- make sure the cubes are mapped to the categories\r\ni=1;\r\nsSetupFlag = 'No';\r\n#DimensionDeleteAllElements(paDoc_008_DimName);\r\n#DimensionElementInsert(paDoc_008_DimName,'', 'Transformation','C');\r\n#DimensionElementInsert(paDoc_008_DimName,'', 'Financial','C');\r\n#DimensionElementInsert(paDoc_008_DimName,'', 'System & Useability','C');\r\n#DimensionElementInsert(paDoc_008_DimName,'', 'Mapping','C');\r\n#DimensionElementInsert(paDoc_008_DimName,'', 'Commentary','C');\r\n#DimensionElementInsert(paDoc_008_DimName,'', 'Calculation','C');\r\n#DimensionElementInsert(paDoc_008_DimName,'', 'Bonus','C');\r\n#DimensionElementInsert(paDoc_008_DimName,'', 'Currency','C');\r\n#DimensionElementInsert(paDoc_008_DimName,'', 'Input','C');\r\n#DimensionElementInsert(paDoc_008_DimName,'', 'Rates and Dates','C');\r\n#DimensionElementInsert(paDoc_008_DimName,'', 'TBD','C'); \r\n\r\nii = dimsiz('}Cubes');\r\nwhile (i<=ii);\r\n   sE = dimnm('}cubes', i);\r\n   if (subst(trim(sE),1,1)@<>'}');\r\n      sEc = CellGetS(paDoc_CubeName, Trim(sE), 'category');\r\n      if (TRIM(sEc)@='');\r\n         sEc = 'TBD';\r\n      endif;\r\n      if (dimix(paDoc_008_DimName, Trim(sEc))=0);\r\n         DimensionElementInsert(paDoc_008_DimName,'', Trim(sEc),'C');\r\n      endif;\r\n      if (Trim(sEc)@<>'');                                                                \r\n         DimensionElementInsert(paDoc_008_DimName,'', Trim(sE),'N');\r\n         DimensionElementComponentAdd(paDoc_008_DimName, Trim(sEc),Trim(sE), 1);\r\n         sSetupFlag = 'Yes';                                           \r\n      endif;\r\n   endif;\r\n   i = i + 1;\r\nend;\r\n\r\n#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\   Cube Structures.html  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#\r\nsaved = Trim(pDocumentName);\r\npDocumentName = pOutputSite|'Cube Structures';\r\n\r\n# --- HTML Head information\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<head><script type=\"text/javascript\" src=\"js/jquery.3.4.1.min.js\"></script>');\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<link rel=\"stylesheet\" type=\"text/css\" href=\"css/gridtable.css\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<link rel=\"stylesheet\" type=\"text/css\" href=\"css/main.css\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"frame-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"script-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''unsafe-inline''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''unsafe-eval''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"style-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\"></head>');\r\n\r\n# --- Report Heading\r\nasciioutput(Trim(pDocumentName) |  '.html', '<body><div class=\"heading\"><img src=\"img/GV.png\" class=\"logo\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<div class=\"title1\">' | Trim(pHeadingText) | ' Cube Structures</div>');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<div class=\"title3\">Note: cubes are listed below grouped by category<BR>');\r\nasciioutput(Trim(pDocumentName) |  '.html', 'Model is as of ' | Trim(pAsOfDate) | '</div></div>');\r\n\r\n# --- start the table that will hold the current category of cubes\r\n# --- now drive the creation of the diagram by category, then cube\r\n\r\ni=1;\r\nii = dimsiz(paDoc_008_DimName);\r\nasciioutput(Trim(pDocumentName) |  '.html', '<div class=\"grids\">');\r\nwhile (i<ii);\r\n   sE = dimnm(paDoc_008_DimName, i);\r\n   if (DTYPE(paDoc_008_DimName, sE)@='C');\r\n   # --- process cubes by category and put in to separate grids\r\n      ikids = ELCOMPN(paDoc_008_DimName, sE);\r\n      if (iKids>0);\r\n         asciioutput(Trim(pDocumentName) |  '.html', '<div><table  class=\"gridtable\">');\r\n         asciioutput(Trim(pDocumentName) |  '.html', '<tr><td class=\"thead\" colspan=\"' | str(ikids,3,0) | '\" >' | sE | '</td></tr><tr></tr>');\r\n         iii = 1;\r\n         while (iii<=iKids);\r\n         # --- get the kid\r\n            sCubeName = ELCOMP(paDoc_008_DimName, sE, iii);\r\n            asciioutput(Trim(pDocumentName) |  '.html', '<td>');\r\n            asciioutput(Trim(pDocumentName) |  '.html', '<table class=\"gridtable\">');\r\n            asciioutput(Trim(pDocumentName) |  '.html', '<tr><th class=\"thhead\">' | sCubeName  | '</th>');\r\n         # --- process the cube\r\n            j=1;\r\n            asciioutput(Trim(pDocumentName) |  '.html', '<tr><td>');\r\n            while (j<=30);\r\n               sD = TABDIM(sCubeName, j);\r\n               if (trim(sD)@<>'');\r\n                  gitIt = CellGetS(paDoc_CubeName, sCubeName, 'Dimensions');\r\n                  CellPutS(gitIT | '<BR>' | sD,paDoc_CubeName, sCubeName, 'Dimensions');\r\n                  # --- okay update this dim in the dim cube with the cube name\r\n                  if(subst(sD,1,1)@<>'}');\r\n                     gitIt = CellGetS(paDoc_CubeName, sD, 'Cubes');\r\n                  endif;\r\n                  if (scan(sCubeName, gitit)=0);\r\n                     CellPutS(gitIT | '<BR>' | sCubeName, paDoc_CubeName, sD, 'Cubes');\r\n                  endif;\r\n                  asciioutput(Trim(pDocumentName) |  '.html', '<li>' | sD | '</li>');\r\n               endif;\r\n               j=j+1;\r\n            end;\r\n            iii = iii + 1;\r\n            asciioutput(Trim(pDocumentName) |  '.html', '</td></tr></table></td>');\r\n         end;\r\n         asciioutput(Trim(pDocumentName) |  '.html', '</td></table></div>');\r\n      endif;\r\n   endif;\r\n   i=i+1;\r\nend;\r\nasciioutput(Trim(pDocumentName) |  '.html', '</div></body>');\r\n\r\nif (sSetupFlag@='No');\r\n         asciioutput(Trim(pDocumentName) |  '.html', '<table class=\"gridtable\"><td><center>You have not categorized any cubes. Diagram can not be generated</center></td></table>');\r\nEndif;\r\n\r\n#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\  Cube Details.html  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#\r\n\r\n# --- interestingly let's now add the cube details\r\n#paiger=0;\r\npDocumentName = saved;\r\npDocumentName = pOutputSite|'Cube Details';\r\n\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<head><script type=\"text/javascript\" src=\"js/jquery.3.4.1.min.js\"></script>');\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<link rel=\"stylesheet\" type=\"text/css\" href=\"css/gridtable.css\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<link rel=\"stylesheet\" type=\"text/css\" href=\"css/main.css\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"frame-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"script-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''unsafe-inline''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''unsafe-eval''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"style-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''unsafe-inline''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\"></head>');\r\n\r\n# --- Report Heading\r\nasciioutput(Trim(pDocumentName) |  '.html', '<body><div class=\"heading\"><img src=\"img/GV.png\" class=\"logo\">');\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<div class=\"title1\">' | Trim(pHeadingText) | ' TM1 Cube Details</div></div>');\r\n\r\n# --- Report Graphs\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<div class=\"graphs\">');\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<div class=\"title2\">Cubes by Number of Dimensions</div>');\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<div class=\"title3\">(Note that more than 12 dimensions per cube is non-optimal)</div>');\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<svg width=\"950\" height=\"220\" class=\"graph\" id=\"CubViz\" frameborder=\"0\"></svg>');\r\n#asciioutput(Trim(pDocumentName)  |  '.html', '<div class=\"title2\">Cubes by Proportional Size</div>');\r\n#asciioutput(Trim(pDocumentName)  |  '.html', '<svg width=\"1000\" height=\"300\" class=\"graph\" id=\"CubTreeViz\" frameborder=\"0\"></svg>');\r\nasciioutput(Trim(pDocumentName)  |  '.html', '</div>');\r\n\r\n\r\n# --- start of live cube details\r\n\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<table class=\"gridtable\" width=\"1000\">');\r\nasciioutput(Trim(pDocumentName)  | '.html',\r\n   '<thead><tr><th>Cube Name</th><th width=\"50\">Category</th><th>Purpose</th><th>Dimensions</th><th>Rules<br>File</th></tr></thead><tbody>');\r\n\r\n# --- setup data file for cubes graphing\r\n\r\nasciioutput(Trim(pOutputSite)|'outputs\\' | 'cubs.csv', 'cubes,dims,legend');\r\n\r\n# --- loop the cubs again\r\nnoCubes = dimsiz('}Cubes');\r\nfCounter = 1;\r\nkeyd2 = '';\r\nwhile (fCounter <= noCubes);\r\n   V1 = dimnm('}Cubes', fCounter);\r\n   if(subst(V1,1,1)@<>'}');\r\n      sk = CellGetS(paDoc_CubeName , V1, 'Notes');\r\n   endif;\r\n   if (subst(Trim(V1),1,1)@<>'}' & Trim(sk)@<>'Exclude');\t\r\n      aq = CellGetS(paDoc_CubeName , V1, 'Category');\r\n      V2=  CellGetS(paDoc_CubeName , V1, 'Purpose');\t\t\r\n      V3 = FileExists(Trim(pRUX) | TRIM(V1) |'.RUX');             \r\n      if (V3=0);\r\n         V4 = 'No';\r\n      else;\r\n         V4='Yes';\r\n      endif;\r\n      V5a='';\r\n      sEE = '';\r\n      theP = '';\r\n      MEASURES_DIMENSION='';\r\n      NoM=0;\r\n      xnay=0;\r\n      xnayW=0;\t\r\n      V5='';\r\n      jim = 1;\r\n      myDim = 'start';\r\n      noM =0;\r\n      opp=0;\r\n      while (myDim@<>'');\r\n         myDim = TABDIM(V1, jim);\r\n         if (TRIM(myDim)@<>'');\r\n            V5 = V5 |  myDim | ', ';\r\n            opp = opp + 1;\r\n            asciioutput(Trim(pOutputSite)|'outputs\\' | 'cubs.csv', str(fCounter,9,0), str(opp,3,0),V1);\r\n         endif;\r\n         jim = jim + 1;\r\n      end;\r\n# ---  check for designated  measures and period dimensions\r\n      MEASURES_DIMENSION = cellgets('}CubeProperties', Trim(V1), 'MEASURES_DIMENSION');\r\n      if (Trim(MEASURES_DIMENSION)@<>'');\r\n         noM = dimsiz(MEASURES_DIMENSION);\r\n      else;\r\n         MEASURES_DIMENSION = '* * Warning - No measures dimension designated * *';\r\n         noM = 0;\r\n      endif;\r\n# ---  check for designated  measures and period dimensions\r\n      TIME_DIMENSION = cellgets('}CubeProperties', Trim(V1), 'TIME_DIMENSION');\r\n      if (Trim(TIME_DIMENSION)@<>'');\r\n         noP = dimsiz(TIME_DIMENSION);\r\n      else;\r\n         TIME_DIMENSION = '* * Warning - No time dimension designated * *';\r\n         noP = 0;\r\n      endif;\r\n      LOGGING = cellgets('}CubeProperties', Trim(V1), 'LOGGING');\r\n      DEMANDLOAD  = cellgets('}CubeProperties', Trim(V1), 'DEMANDLOAD');\r\n      myL = Long(trim(V5));\r\n      V5a = Subst(V5, 1, (myL-1));\r\n      foo = ELCOMPN('}sys_paDocRUX', 'Source Cube: ' | Trim(V1));\r\n      foo1 = 1;\r\n      sEE = '';\r\n#      asciioutput(pOutputSite|'outputs\\' | 'fooboutput.cma',sEE,'before foo',V1,'Source Cube: ' | Trim(V1),STR(foo,1,0));\r\n      while (foo1<=foo);\r\n#         asciioutput(pOutputSite|'outputs\\' | 'foooutputprecheck.cma',sEE,STR(foo,1,0),ELCOMP('}paDocRUX', 'Source Cube: ' | Trim(V1), foo1));\r\n         if (foo1>1);\r\n            sEE = sEE | ', ' | ELCOMP('}sys_paDocRUX', 'Source Cube: ' | Trim(V1), foo1); \r\n#            asciioutput(pOutputSite|'outputs\\' | 'foo1output.cma',sEE,'anyone home');\t\t \r\n         else;\r\n            sEE = sEE | ' ' | ELCOMP('}sys_paDocRUX', 'Source Cube: ' | Trim(V1), foo1);\r\n#            asciioutput(pOutputSite|'outputs\\' | 'foooutput.cma',sEE,'anyone');\t\t \r\n         endif;        \r\n         foo1 = foo1 + 1;\r\n      end;\r\n# --- gather the processes list\r\n      theP = '';\r\n      manyp = ELCOMPN('}sys_paDocCubesProcesses', 'H-' |Trim(V1));\r\n      m1 = 1;\r\n      while (m1<=manyp);\r\n         soap = ELCOMP('}sys_paDocCubesProcesses', 'H-' |Trim(V1), m1);\r\n         theP = theP  | Trim(soap) |  '<BR>';\r\n         m1 = m1 + 1;\r\n      end;\r\n# --- for this cube check access of each group\r\n      ngrps = dimsiz('}groups');\r\n      v = 1;\r\n      xnay =0;\r\n      xnayW=0;\r\n      while (v <= ngrps);\r\n         sGrp = dimnm('}groups', v);\r\n         myA = CellGetS('}CubeSecurity', Trim(V1), Trim(sGrp));\r\n         if (Trim(myA)@<>'');\t\t\t\r\n            if (Trim(myA)@='Read');\r\n               xnay = xnay + 1;\r\n            elseif (Trim(myA)@='Write');\r\n               xnayW = xnayW + 1;\r\n            endif;\r\n         endif;\r\n         v = v +1;\r\n      end;\r\n      mViews =  CellGetS('}sys_paDoc' , V1, 'Views');\r\n      xnay = scan(',,',mViews);   \r\n# --- now we gotta add all of the users private views\r\n      ick = dimsiz('}Clients');\r\n      icky = 1;\r\n      while (icky<=ick);\r\n         whome1 = dimnm('}clients', icky);\r\n         if (dimix('}paDoc', whome1)>0);\r\n            ncubes = dimsiz('}Cubes');\r\n            nc=1;\r\n            while (nc<=ncubes);\r\n               myCube = dimnm('}Cubes', nc);\r\n               pvi = CellGetS('}sys_paDoc', myCube, whome1);\r\n               if (trim(pvi)@<>'');\r\n                  mViews = mViews | ',' | pvi;\r\n               endif;\r\n               nc=nc +1;\r\n            end;\r\n         endif;\r\n         icky = icky + 1;\r\n      end;\r\n\r\n      fmViews = subst(mViews,1,(LONG(mViews)-1));\r\n      asciioutput(Trim(pDocumentName)  |  '.html', \r\n         '<tr><td><b>' | V1 | ' </b></td><td>' | aq | ' </td><td>' | V2 | ' </td><td>' | V5a  | ' </td><td><center>' | V4 | '</center> </td></tr>');\r\n      asciioutput(Trim(pDocumentName)  |  '.html', \r\n         '<tr><td class=\"tind\">Cubes Referenced in Rules:</td><td colspan=\"4\">' |  Trim(sEE) | '</td></tr>');\r\n      asciioutput(Trim(pDocumentName)  |  '.html', \r\n         '<tr><td class=\"tind\">Referenced in Process:</td><td colspan=\"4\">' |  Trim(theP)| '</td></tr>');\r\n      asciioutput(Trim(pDocumentName)  |  '.html', \r\n         '<tr><td class=\"tind\">Views:</td><td colspan=\"4\">' |  fmViews | '</td></tr>');\r\n      c = 1;\r\n      cccc = '';\r\n      iz=0;\r\n      cc = dimsiz('}Groups');\r\n      while (c<=cc);\r\n         sC = dimnm('}Groups', c);\r\n         if (Trim(sC)@<>'');\r\n            ccc = cellgets('}CubeSecurity', Trim(V1), Trim(sC));\r\n            if (trim(ccc)@<>'');\r\n               flipped = ATTRSL('}Groups',Trim(sC), '}TM1_DefaultDisplayValue');\r\n               if (iz=0);\r\n                  cccc = cccc | Trim(flipped) | '<br>';\r\n               else;\r\n                  cccc = cccc | Trim(flipped) | '<br>';\r\n                  iz=1;\r\n               endif;\r\n            endif;\r\n         endif;\r\n         c = c + 1;\r\n      end;\r\n      asciioutput(Trim(pDocumentName)  |  '.html', \r\n         '<tr><td class=\"tind\">Groups with Access:</td><td colspan=\"4\">Read=' | str(xnay,3,0) | '<BR>Write=' | str(xnayW,3,0) | '<BR>' | cccc | '</td></tr>');\r\n      asciioutput(Trim(pDocumentName)  |  '.html', \r\n         '<tr><td class=\"tind\">Measures Dimension<BR>No. of Measures:</td><td colspan=\"4\">' | Trim(MEASURES_DIMENSION) | '<BR>' | str(NoM,3,0) | '</td></tr>');\r\n      asciioutput(Trim(pDocumentName)  |  '.html', \r\n         '<tr><td class=\"tind\">Time Dimension<BR>No. of Measures:</td><td colspan=\"4\">' | Trim(TIME_DIMENSION ) | '<BR>' | str(NoP,3,0) | '</td></tr>');\r\n      asciioutput(Trim(pDocumentName)  |  '.html', \r\n         '<tr class=\"fileWrite\"><td class=\"tind\">Logging<BR>On Demand:</td><td colspan=\"4\">' | Trim(LOGGING ) | '<BR>' | DEMANDLOAD | '</td></tr>');\r\n   endif;\r\n   fCounter = FCounter + 1;\r\nend;\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<tbody></table><script type=\"text/javascript\" src=\"js/CubViz001.js\"></script><script type=\"text/javascript\" src=\"js/CubTreeViz.js\"></script></body>');\r\n#asciioutput(Trim(pOutputSite)|'outputs\\' | 'keyed2.html', '<font size=\"1\" face=\"verdana\"><center>' | keyd2 | '</center></font>');\r\n\r\n#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\   Processes and Chores.html   \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#\r\n\r\npDocumentName = pOutputSite|'Processes and Chores';\r\nNoProcesses = dimsiz('}Processes');\r\n\r\n# --- HTML Head information\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<head><script type=\"text/javascript\" src=\"js/jquery.3.4.1.min.js\"></script>');\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<link rel=\"stylesheet\" type=\"text/css\" href=\"css/gridtable.css\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<link rel=\"stylesheet\" type=\"text/css\" href=\"css/main.css\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"frame-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"script-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''unsafe-inline''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''unsafe-eval''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"style-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\"></head>');\r\n\r\n# --- Report Heading\r\nasciioutput(Trim(pDocumentName) |  '.html', '<body><div class=\"heading\"><img src=\"img/GV.png\" class=\"logo\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<div class=\"title1\">' | Trim(pHeadingText) | ' TI Processes</div>');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<div class=\"title3\">Total Number of TurboIntegrator Processes: ' | str(NoProcesses,9,0) | '<BR>');\r\nasciioutput(Trim(pDocumentName) |  '.html', 'Model is as of ' | Trim(pAsOfDate) | '</div></div>');\r\n\r\n# --- Report Gridtable\r\nasciioutput(Trim(pDocumentName)  | '.html', '<div class=\"title2\">' | Trim(pHeadingText) | ' Processes</div>');\r\nasciioutput(Trim(pDocumentName)  | '.html', '<table class=\"gridtable\" width=\"1000\">');\r\nasciioutput(Trim(pDocumentName)  | '.html', \r\n      '<thead><tr><th>Process Name</th><th>Category</th><th>Purpose</th><th>Total<BR>Lines</th><th>Cubes Referenced</th><th>Dimensions Referenced</th><th>Processes Referenced</th><th>Referenced<BR>In Chore(s)</th></tr></thead><tbody>');\r\n\r\n# --- Processes table\r\nfCounter = 1;\r\nwhile (fCounter <= NoProcesses);\r\n   V1 = dimnm('}Processes', fCounter);\r\n   if(subst(V1,1,1)@<>'}'); \r\n      sE = CellGetS(paDoc_CubeName , V1, 'Exclude');\r\n   endif;                           \r\n   if (subst(Trim(V1),1,1)@<>'}' & sE@<>'Yes');\t\r\n      processesCategory = CellGetS(paDoc_CubeName , V1, 'Category');\r\n      processPurpose =  CellGetS(paDoc_CubeName , V1, 'Purpose');\r\n      processNote = CellGetS(paDoc_CubeName , V1, 'Notes');\r\n       if (trim(processNote)@<>'Exclude');\r\n\r\n# --- loop thru cubes and see if this process is a child of any of them\r\n         love = dimsiz('}Cubes');\r\n         lover = 1;\r\n         sloverCube = '';\r\n         while (lover <=love);\r\n            loveCube = dimnm('}paDocCubesProcesses', lover);\r\n            if (ELISANC('}paDocCubesProcesses', loveCube, V1)=1);\r\n               if (subst(trim(loveCube),1,2)@='H-');\r\n                  Sj = subst(trim(loveCube),3,99);\r\n               else;\r\n                  Sj = loveCube;\r\n               endif;\r\n               sloverCube = sloverCube | Sj | '<br>';\r\n            endif;\r\n            lover = lover + 1;\r\n         end;\r\n\r\n# --- loop thru dimensions and see if this process is a child of any of them\r\n         love = dimsiz('}Dimensions');\r\n         lover = 1;\r\n         sloverDim = '';\r\n         while (lover <=love);\r\n            loveCube = dimnm('}paDocDimensionsProcesses', lover);\r\n            if (ELISANC('}paDocDimensionsProcesses', loveCube, V1)=1);\r\n               if (subst(trim(loveCube),1,2)@='H-');\r\n                  Sj = subst(trim(loveCube),3,99);\r\n               else;\r\n                  Sj = loveCube;\r\n               endif;                                         \r\n               sloverDim = sloverDim | Sj | '<br>';\r\n            endif;\r\n            lover = lover + 1;\r\n         end;\r\n\r\n# --- loop thru processes and see if this process is a child of any of them\r\n         love = dimsiz('}Processes');\r\n         lover = 1;\r\n         sloverPro = '';\r\n         while (lover <=love);\r\n            loveCube = dimnm('}Processes', lover);\r\n            if (ELISANC(paDoc_004_DimName, 'H-' | loveCube, V1)=1);\r\n               sloverPro = sloverPro | loveCube | '<br>';\r\n            endif;\r\n            lover = lover + 1;\r\n         end;\r\n\r\n# --- loop thru files and see if this process is a child of any of them\r\n         ikiders=ELCOMPN(paDoc_005_DimName, Trim(V1));\r\n         ikidercare = 1;\r\n         sloverFile = '';\r\n         while (ikidercare<=ikiders);\r\n            loveCube = ELCOMP(paDoc_005_DimName, Trim(V1), ikidercare);\r\n            sloverFile = sloverFile | loveCube | '<br>';\r\n            ikidercare = ikidercare + 1;\r\n         end;\r\n         processLines = CellGetS(paDoc_CubeName, Trim(V1), 'Size');\r\n         n = dimsiz('}chores');\r\n         nn=1;\r\n         dachores = '';\r\n         while (nn<=n);\r\n            nnn = dimnm('}Chores', nn);\r\n            nnnn = ELISANC('}paDocChoresProcesses', trim(nnn), Trim(V1));\r\n            if (nnnn=1);\r\n               dachores = dachores | Trim(nnn) | ' ';\r\n            endif;\r\n            nn = nn + 1;\r\n         end;\r\n         asciioutput(Trim(pDocumentName) |  '.html', \r\n            '<tr class=\"tiDetails\"><td><B>' | ' ' | V1 | ' </B></td><td>' | processesCategory | ' </td><td>' | processPurpose | ' </td><td><center>' | processLines | ' </center></td><td>' | sloverCube   | ' </td><td><center>' | sloverDim | '</center> </td>\r\n             <td>' | trim(sloverPro) | ' </td><td>' | trim(dachores) | ' </td></tr>');\r\n         asciioutput(Trim(pDocumentName)  |  '.html', \r\n            '<tr class=\"fileRef\"><td class=\"tind\">Files Referenced:</td><td colspan=\"8\">' | Trim(sloverFile) | ' </td></tr>');\r\n         itout = cellgets(paDoc_CubeName, Trim(V1), 'Notes');\r\n         asciioutput(Trim(pDocumentName)  |  '.html', \r\n            '<tr class=\"fileWrite\"><td class=\"tind\">Files Written:</td><td colspan=\"8\">' | Trim(itout) | ' </td></tr>');                                    \r\n      endif;\r\n   endif;\r\n   fCounter = fCounter + 1;\r\nend;\r\nasciioutput(Trim(pDocumentName)  |  '.html', '</table>');\r\n\r\n# --- Chore table\r\n\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<div class=\"title2\">' | Trim(pHeadingText) | ' Chores</div><table class=\"gridtable\" width=\"1000\">');\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<thead><tr><th>Chore Name</th><th>Category</th><th>Purpose</th><th>Processes Referenced</th><th>Active Y/N</th><th>Start Date</th><th>Notes</th></tr></thead><tbody>');\r\n\r\n# --- loop through the chores\r\nnoChores = dimsiz('}Chores');\r\nfCounter = 1;\r\nsGotChores = 'No';\r\nwhile (fCounter <= noChores);\r\n   V1 = dimnm('}Chores', fCounter);\r\n   if (subst(Trim(V1),1,1)@<>'}');\r\n      processesCategory = CellGetS(paDoc_CubeName , V1, 'Category');\r\n      processPurpose =  CellGetS(paDoc_CubeName , V1, 'Purpose');\r\n      processNotes =  CellGetS(paDoc_CubeName , V1, 'Notes');\r\n      ikiders=ELCOMPN(paDoc_006_DimName, Trim(V1));\r\n      ikidercare = 1;\r\n      sloverProcess = '';\r\n      while (ikidercare<=ikiders);\r\n         loveCube = ELCOMP(paDoc_006_DimName, Trim(V1), ikidercare);\r\n         sloverProcess = sloverProcess | loveCube | '<br>';\r\n         ikidercare = ikidercare + 1;\r\n      end;\r\n      sStatus = CellGetS(paDoc_CubeName , V1, 'Status');\r\n      sSDT = CellGetS(paDoc_CubeName , V1, 'Start Date Time');\r\n      sGotChores = 'Yes';\r\n      asciioutput(Trim(pDocumentName)  |  '.html', \r\n         '<tr><td>' | V1 | ' </td><td>' |  processesCategory  | ' </td><td>' | processPurpose  | ' </td><td>' | sloverProcess  | ' </td><td><center>' | sStatus | '</center> </td><td>' | sSDT | ' </td><td>' | processNotes  | ' </td></tr>');\r\n   endif;\r\n   fCounter = fCounter + 1;\r\nend;\r\nasciioutput(Trim(pDocumentName)  |  '.html', '</tbody></table>');\r\n\r\n# --- Message if no chores are configured\r\nif (sGotChores@='No');\r\n   asciioutput(Trim(pDocumentName) | '.html', '<table class=\"gridtable\"><td><center>No Appication Chores Found.</center></td></table>');\r\nEndif;\r\n\r\n#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\   Dimensions.html   \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#\r\n\r\npDocumentName = pOutputSite|'Dimensions';\r\n\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<head><script type=\"text/javascript\" src=\"js/jquery.3.4.1.min.js\"></script>');\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<link rel=\"stylesheet\" type=\"text/css\" href=\"css/gridtable.css\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<link rel=\"stylesheet\" type=\"text/css\" href=\"css/main.css\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"frame-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"script-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''unsafe-inline''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''unsafe-eval''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"style-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\"></head>');\r\n\r\n# --- gather Dimesion details\r\n# --- Variables\r\nNoAtts = 0;\r\nNoDims = DIMSIZ('}Dimensions');\r\nq=1;\r\nNid=0;\r\ntotalelements=0;\r\nl = 0;\r\n\r\n# --- \r\nwhile(q<=NoDims);\r\n   sq=dimnm('}Dimensions', q);\r\n   if (subst(sq,1,1)@<>'}');\r\n      Nid=Nid+1;\r\n      if (dimsiz(sq)>l);\r\n         l = dimsiz(sq);\r\n         lq = sq;\r\n      endif;\r\n      totalelements =  totalelements + dimsiz(sq);\r\n   endif;\r\n   q=q+1;\r\nend;\r\nabig = totalelements/Nid;\r\n\r\n# --- Report Heading\r\nasciioutput(Trim(pDocumentName) |  '.html', '<body><div class=\"heading\"><img src=\"img/GV.png\" class=\"logo\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<div class=\"title1\">' | Trim(pHeadingText) | ' - Dimensions</div>');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<div class=\"title3\">Total Number of Dimensions: ' | STR(Nid,3,0) |'<BR>');\r\nasciioutput(Trim(pDocumentName)  |  '.html', 'Average Dimension Size: ' | str(abig,5,0) | '<BR>');\r\nasciioutput(Trim(pDocumentName)  |  '.html', 'Largest Dimension: ' | lq | ', with ' | str(l,9,0) | ' indexes<BR>');\r\nasciioutput(Trim(pDocumentName) |  '.html', 'Model is as of ' | Trim(pAsOfDate) | '</div></div>');\r\n\r\n# --- Report Graph\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<div class=\"graphs\"><div class=\"title2\">Dimensions by Number of Elements</div>');\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<svg width=\"950\" height=\"220\" class=\"graph\" frameborder=\"0\" id=\"DimViz\"></svg></div>');\r\n\r\n# --- Report Gridtable\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<table class=\"gridtable\" width=\"95%\">');\r\nasciioutput(Trim(pDocumentName)  |  '.html', \r\n    '<thead><tr><th>Dimension Name</th><th>Category</th><th>Purpose</th> <th>Attribute (Type)</th><th>Number<BR>of<BR>Elements</th><th>Cubes</th><th>Subsets</th></tr></thead><tbody>');\r\n\r\n# --- loop the dimensionss\r\n#noCubes = dimsiz('}Dimensions');\r\nfCounter = 1;\r\ndcounter = 0;\r\nasciioutput(Trim(pOutputSite)|'outputs\\' | 'dimensionGraph.csv', 'dimension,elements,legend');\r\n\r\n#while (fCounter <= noCubes);\r\nwhile (fCounter <= NoDims);\r\n   V1 = dimnm('}Dimensions', fCounter);\r\n   if(subst(V1,1,1)@<>'}');\r\n      EE =  CellGetS(paDoc_CubeName , V1, 'Exclude');\r\n   endif;\r\n   if (subst(Trim(V1),1,1)@<>'}' & EE @<>'Exclude');\r\n      processesCategory = CellGetS(paDoc_CubeName , V1, 'Category');\r\n      processPurpose =  CellGetS(paDoc_CubeName , V1, 'Purpose');\r\n      processNotes =  CellGetS(paDoc_CubeName , V1, 'subsets');\r\n      processCubes =  CellGetS(paDoc_CubeName , V1, 'Cubes');\r\n\r\n      if (TRIM(processCubes)@='');\r\n         shrd = 'No';\r\n      else;\r\n         if (scan(subst(trim(processCubes),5,99),'}')=0);\r\n            shrd = 'No';\r\n         else;\r\n            shrd ='Yes';\r\n         endif;\r\n      endif;\r\n\r\n      i = FileExists('}ElementAttributes_' | Trim(V1)  | '.dim');\r\n      if (i>0);\r\n         ikiders = dimsiz('}ElementAttributes_' | Trim(V1));\r\n         NoAtts = NoAtts + ikiders;\r\n         ic = 1;\r\n         sA='';\r\n         while (ic<=ikiders);\r\n            sE = dimnm('}ElementAttributes_' | Trim(V1), ic);\r\n            if (sE@<>'');\r\n               atype=DTYPE('}ElementAttributes_' | Trim(V1), Trim(sE));\r\n               if (atype@='AA');\r\n                  atype = '(Alias)';\r\n               elseif (atype@='AS');\r\n                  atype = '(String)';\r\n               elseif (atype@='AN');\r\n                  atype='(Number)';\r\n               else;\r\n                  atype = atype;\r\n               endif;\r\n               sE = sE | '  ' | trim(atype);\r\n               sA = sA | sE | '<BR>';\r\n            endif;\r\n            ic = ic + 1;\r\n         end;\r\n      endif;\r\n      noElements = dimsiz(V1);           \r\n      xnay = scan('<BR><BR><BR>',processNotes);   \r\n      if (xnay=0);\r\n         xnay=long(processNotes);\r\n      endif;\r\n      fprocessNotes = subst(processNotes,1,xnay);             \r\n      asciioutput(Trim(pDocumentName)  |  '.html', \r\n            '<tr>\r\n            <td>' | V1 | ' </td>\r\n            <td>' |  processesCategory   | ' </td>\r\n            <td>' | processPurpose   | ' </td>\r\n            <td>' |  sA  | ' </td>\r\n            <td nowrap=\"nowrap\"><center>' | str(noElements,3,0) | '</center> </td>\r\n            <td>' |  processCubes   | ' </td>\r\n#            <td>' |  shrd   | ' </td>\r\n            <td valign=\"Top\">' |  trim(fprocessNotes)   | ' </td>                                                                         \r\n            </tr>');\r\n                      \r\n      dcounter = dcounter + 1;\r\n#      if (shrd@='Yes');\r\n      asciioutput(Trim(pOutputSite)|'outputs\\' | 'dimensionGraph.csv', str(dcounter,3,0), str(noElements,3,0), str(dcounter,3,0) | ' - ' | Trim(V1));\r\n#      endif;\r\n   endif;\r\n   fCounter = fCounter + 1;\r\nend;\r\n\r\nasciioutput(Trim(pDocumentName)  |  '.html', '</tbody></table><script type=\"text/javascript\" src=\"js/d3.v4.min.js\"></script><script type=\"text/javascript\" src=\"js/DimViz001.js\"></script></body>');\r\n\r\n#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\   Application Folders.html   \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#\r\n\r\npDocumentName = pOutputSite|'Application Folders';\r\n\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<head><script type=\"text/javascript\" src=\"js/jquery.3.4.1.min.js\"></script>');\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<link rel=\"stylesheet\" type=\"text/css\" href=\"css/gridtable.css\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<link rel=\"stylesheet\" type=\"text/css\" href=\"css/main.css\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"frame-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"script-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''unsafe-inline''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''unsafe-eval''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"style-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''unsafe-inline''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\"></head>');\r\n\r\nno_Folders = dimsiz('}sys_paDocAppFolders');\r\n\r\n# --- Report Heading\r\nasciioutput(Trim(pDocumentName) |  '.html', '<body><div class=\"heading\"><img src=\"img/GV.png\" class=\"logo\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<div class=\"title1\">' | Trim(pHeadingText) | ' - Applications</div>');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<div class=\"title3\">Total Number of Folders: ' | str(no_Folders,3,0) |'</div></div>');\r\n\r\n# --- Report Grid\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<table class=\"gridtable\" width=\"950\">');\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<thead><tr><th>Folder Name</th><th>Category</th><th>Purpose</th><th>Sub-Folders<BR>or Files</th><th>Type</th><th>Groups with Access<BR>To Folder</th></tr></thead><tbody>');\r\n\r\nnt = 1;\r\nwhile (nt<=no_Folders);\r\n   processAppFolders = dimnm('}sys_paDocAppFolders', nt);\r\n   noKids = ELCOMPN('}ApplicationEntries', processAppFolders);\r\n   ick = 1;\r\n   LR = '';\r\n   while (ick<=noKids);\r\n      sbf = ELCOMP('}ApplicationEntries', processAppFolders, ick);\r\n      LR = LR | TRim(sbf) | '<BR>';\r\n      ick = ick + 1;\r\n   end;\r\n   Tpurpose = CellGetS(paDoc_CubeName, processAppFolders, 'Purpose');\r\n   Tcategory = CellGetS(paDoc_CubeName, processAppFolders, 'Category');     \r\n# --- loop thru all groups and see what groups may have access to this folder\r\n   d = dimsiz('}groups');\r\n   ddq = 1;\r\n   ddd = '';\r\n   gotaccess = '';\r\n   while (ddq<=d);\r\n      dn = dimnm('}groups', ddq);\r\n      ddd = cellgets('}ApplicationSecurity', processAppFolders, dn);\r\n      if (Trim(ddd)@='READ');\r\n         gotaccess =  gotaccess | trim(dn ) | ',';\r\n      endif;\r\n         ddq = ddq + 1;\r\n   end;\r\n   gog = long(Trim(gotaccess));\r\n   gotaccess = subst(trim(gotaccess),1,(gog-1));\r\n   asciioutput(Trim(pDocumentName)  |  '.html', \r\n      '<tr><td style=\"width:130px\">' | processAppFolders  | ' </td><td style=\"width:130px\">' |  Tcategory  | ' </td><td style=\"width:130px\">' | Tpurpose | ' </td><td style=\"width:130px\">' |  LR  | ' </td><td style=\"width:130px\"><center>' | '' | '</center> </td>\r\n       <td style=\"width:130px\">' |  Trim(gotaccess) | ' </td></tr>');\r\n   nt = nt + 1;\r\nend;\r\n\r\nasciioutput(Trim(pDocumentName)  |  '.html', '</tbody></table><BR>');\r\n\r\n#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\   Groups and Clients.html   \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#\r\n\r\npDocumentName = pOutputSite|'Groups and Clients';\r\n\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<head><script type=\"text/javascript\" src=\"js/jquery.3.4.1.min.js\"></script>');\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<link rel=\"stylesheet\" type=\"text/css\" href=\"css/gridtable.css\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<link rel=\"stylesheet\" type=\"text/css\" href=\"css/main.css\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"frame-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"script-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''unsafe-inline''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''unsafe-eval''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<meta http-equiv=\"Content-Security-Policy\" content= \"style-src ');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''self''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '''unsafe-inline''');\r\nasciioutput(Trim(pDocumentName) |  '.html', '\"></head>');\r\n\r\nTotalGroups = dimsiz('}Groups');\r\nTotalClients=dimsiz('}Clients');\r\n\r\n# --- Report Heading\r\nasciioutput(Trim(pDocumentName) |  '.html', '<body><div class=\"heading\"><img src=\"img/GV.png\" class=\"logo\">');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<div class=\"title1\">' | Trim(pHeadingText) | ' - Groups and Clients</div>');\r\nasciioutput(Trim(pDocumentName) |  '.html', '<div class=\"title3\">Total Groups: ' | str(TotalGroups,3,0) | ' Total Clients: ' | str(TotalClients,3,0) | '</div></div>');\r\n\r\n# --- Report Grid\r\nasciioutput(Trim(pDocumentName)  |  '.html', '<table class=\"gridtable\" width=\"1000\">');\r\nasciioutput(Trim(pDocumentName)  |  '.html', \r\n   '<thead><tr><th>Group Name</th><th>Assigned<BR>Clients</th><th>Client Count</Th><th>Assigned<BR>Cubes</th><th>Assigned<BR>Dimensions</th></tr></thead><tbody>');\r\n\r\nno_Folders = dimsiz('}Groups');\r\nnt = 1;\r\nwhile (nt<=no_Folders);\r\n   processAppFolders = dimnm('}Groups', nt);\r\n   # sprocessAppFolders = ATTRSL('}Groups', Trim(processAppFolders), 'en-us');\r\n   #if (Trim(sprocessAppFolders)@='');\r\n      sprocessAppFolders = processAppFolders;\r\n   # endif;\r\n   i=1;\r\n   z=0;\r\n   ii=dimsiz('}Clients');\r\n   p = '';\r\n   while (i<=ii);\r\n      sz = dimnm('}clients', i);\r\n      whom = cellgets('}ClientGroups', trim(sz), sprocessAppFolders);\r\n      if (trim(whom)@<>'');\r\n         toite = ATTRSL('}Clients', trim(sz), '}TM1_DefaultDisplayValue');\r\n         p = p | trim(toite) | '<BR>';\r\n         z=z+1;\r\n      endif;\r\n      i = i + 1;\r\n   end;\r\n   i=1;\r\n   ii=dimsiz('}Cubes');\r\n   pp = '';\r\n   while (i<=ii);\r\n      sz = dimnm('}Cubes', i);\r\n      whom = cellgets('}CubeSecurity', trim(sz), sprocessAppFolders );\r\n      if (trim(whom)@<>'' & subst(trim(sz),1,1)@<>'}'); \r\n         if ((i+1)>ii);\r\n            pp = pp | trim(sz);\r\n         else;                                    \r\n            pp = pp | trim(sz) | ', ';\r\n         endif;\r\n      endif;\r\n      i = i + 1;\r\n   end;\r\n   if (trim(pp)@<>'');\r\n      spp = subst(pp,1,long(pp)-2);\r\n   endif;\r\n   i=1;\r\n   ii=dimsiz('}Dimensions');\r\n   dd = '';\r\n   while (i<=ii);\r\n      sz = dimnm('}Dimensions', i);\r\n      whom = cellgets('}DimensionSecurity', trim(sz), sprocessAppFolders );\r\n      if (trim(whom)@<>'' & subst(trim(sz),1,1)@<>'}'); \r\n         if ((i+1)>ii);\r\n            dd = dd | trim(sz);\r\n         else;                                    \r\n            dd = dd | trim(sz) | ', ';\r\n         endif;\r\n      endif;\r\n      i = i + 1;\r\n   end;\r\n   if (trim(dd)@<>'');\r\n      sdd = subst(dd,1,long(dd)-2);\r\n   endif;\r\n   asciioutput(Trim(pDocumentName)  |  '.html', \r\n      '<tr><td style=\"width:130px\">' | sprocessAppFolders  | ' </td><td style=\"width:150px\">' |  p | ' </td><td style=\"width:50px\"><center>' | str(z,9,0) | '</center></td><td style=\"width:500px\">' |  spp | ' </td><td style=\"width:500px\">' |  sdd | ' </td></tr>');\r\n   nt = nt + 1;\r\nend;\r\n\r\nasciioutput(Trim(pDocumentName)  |  '.html', '</tbody></table></body>');\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "MetadataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+    "DataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+    "EpilogProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+    "DataSource": {
+        "Type": "None"
+    },
+    "Parameters": [
+        {
+            "Name": "pDocumentName",
+            "Prompt": "Enter a name for the output document",
+            "Value": "Consolidation Documentation",
+            "Type": "String"
+        },
+        {
+            "Name": "pHeadingText",
+            "Prompt": "Enter the name of the TM1 Server",
+            "Value": "PA Consolidation",
+            "Type": "String"
+        },
+        {
+            "Name": "pAsOfDate",
+            "Prompt": "Enter an \"as of\" date",
+            "Value": "November 27, 2019",
+            "Type": "String"
+        },
+        {
+            "Name": "pSetting",
+            "Prompt": "Enter 0 to skip setup; 1 to rerun setup",
+            "Value": 0,
+            "Type": "Numeric"
+        },
+        {
+            "Name": "pOutputSite",
+            "Prompt": "Enter a valid path to the paDoc folder",
+            "Value": "E:\\Program Files\\ibm\\cognos\\tm1_64\\webapps\\tm1web\\paDoc\\",
+            "Type": "String"
+        },
+        {
+            "Name": "pRUX",
+            "Prompt": "Enter a valid path to the TM1 Server's Data folder",
+            "Value": "E:\\TM1 Servers\\Food Distribution\\Data\\",
+            "Type": "String"
+        }
+    ],
+    "Variables": [],
+    "Attributes": {
+        "Caption": "sys_paDoc"
+    }
+},
+{
+    "@odata.context": "$metadata#Processes/$entity",
+    "@odata.etag": "W/\"e91352fe2970c62f978e1176adc4e271cc46f968\"",
+    "Name": "sys_paDoc_Setup",
+    "HasSecurityAccess": false,
+    "PrologProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n#~~~~~~~~~~~~~~~~  Start Program Description ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#\r\n# This process sets up the data for paDoc's main process to use                                                     #\r\n#~~~~~~~~~~~~~~~~  End Program Description ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#\r\n\r\n#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#\r\n#~~~~~~~~~~~~~~~~~~~  Maintenance Log ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#\r\n#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#\r\n# ----Date-----|----Programmer---|---------------Description---------------------------------------------------------------------#\r\n#   Mar-2017         Jim Miller    -  Created framework.                                                                                                  # \r\n#   Mar-2018     Dean Watts   -  Revised and simplified framework.  Re-wrote html output\r\n#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#\r\n\r\n# --- Declares\r\nDatasourceASCIIQuoteCharacter='';\r\npOutputSite = pAppLoc|'\\outputs\\';\r\n\r\n# --- Cubes\r\npaDocCubeName = '}sys_paDoc';\r\n\r\n# --- Dimensions\r\n## sys_paDoc is the dimension used in the }sys_paDoc cube for input and collection of descriptive metadata\r\npaDoc_000_DimName = '}sys_paDoc';\r\n\r\n## sys_paDocRUX lists all cubes with rules files and the cubes referenced in those rule files\r\npaDoc_001_DimName = '}sys_paDocRUX';\r\n\r\n## sys_paDocCubesProcesses lists all cubes and all Processes that reference them\r\npaDoc_002_DimName = '}sys_paDocCubesProcesses';\r\n\r\n## sys_paDocDimensionsProcesses lists all dimensions and all Processes that reference them\r\npaDoc_003_DimName = '}sys_paDocDimensionsProcesses';\r\n\r\n## sys_paDocProcessesProcesses lists all processes and the other processes that reference them\r\npaDoc_004_DimName = '}sys_paDocProcessesProcesses';\r\n\r\n## sys_paDocProcessesFiles lists all processes and the files they reference\r\npaDoc_005_DimName = '}sys_paDocProcessesFiles';\r\n\r\n## sys_paDocChoresProcesses lists all chores and the processes associated with them\r\npaDoc_006_DimName = '}sys_paDocChoresProcesses';\r\n\r\n## sys_paDocAppFolders lists all Application folders.\r\npaDoc_007_DimName = '}sys_paDocAppFolders';\r\n\r\n## sys_paDocPictureDriver lists all of the Cube Categories and the Cubes that fall under each\r\npaDoc_008_DimName = '}sys_paDocPictureDriver';\r\n\r\n## sys_paDocData lists all of the PA object types and each object within them  \r\npaDoc_009_DimName = '}sys_paDocData';\r\n\r\n# --- constants\r\nNotFound =0;\r\n\r\n# ---\r\n# --- make sure the paDoc dimensions are built and available\r\n# ---\r\n\r\n# --- do the support dimensions exist? if not create them\r\n\r\n## sets up the 'standard' cube categories\r\nDimName = paDoc_008_DimName;\r\nif (DimensionExists(DimName)=NotFound);\r\n                DimensionCreate(DimName);\r\n                DimensionElementInsert(DimName,'', 'Reporting','C');\r\n\tDimensionElementInsert(DimName,'', 'Data','C');\r\n##\tDimensionElementInsert(DimName,'', 'Financial','C');\r\n\tDimensionElementInsert(DimName,'', 'System & Admin','C');\r\n\tDimensionElementInsert(DimName,'', 'Mapping','C');\r\n##\tDimensionElementInsert(DimName,'', 'Commentary','C');\r\n\tDimensionElementInsert(DimName,'', 'Planning','C');\r\n##\tDimensionElementInsert(DimName,'', 'Bonus','C');\r\n##\tDimensionElementInsert(DimName,'', 'FX','C');\r\n                DimensionElementInsert(DimName,'', 'Input','C');\r\n                DimensionElementInsert(DimName,'', 'Rates and Assumptions','C');\r\n                DimensionElementInsert(DimName,'', 'TBD','C');\r\nelse;\r\n                DimensionDeleteAllElements(DimName);\r\n\tDimensionElementInsert(DimName,'', 'Reporting','C');\r\n\tDimensionElementInsert(DimName,'', 'Data','C');\r\n##\tDimensionElementInsert(DimName,'', 'Financial','C');\r\n\tDimensionElementInsert(DimName,'', 'System & Admin','C');\r\n\tDimensionElementInsert(DimName,'', 'Mapping','C');\r\n##\tDimensionElementInsert(DimName,'', 'Commentary','C');\r\n\tDimensionElementInsert(DimName,'', 'Planning','C');\r\n##\tDimensionElementInsert(DimName,'', 'Bonus','C');\r\n##\tDimensionElementInsert(DimName,'', 'FX','C');\r\n                DimensionElementInsert(DimName,'', 'Input','C');\r\n                DimensionElementInsert(DimName,'', 'Rates and Assumptions','C');\r\n                DimensionElementInsert(DimName,'', 'TBD','C');\r\nendif;\r\n\r\n# --- add in any non-standard categories found in the paDoc cube\r\nif (CubeExists(paDocCubeName)<>NotFound);\r\nns = dimsiz('}Cubes');\r\nnsi = 1;\r\nwhile (nsi<ns);\r\n         sE=dimnm('}Cubes', nsi);\r\n         if (dimix(paDoc_000_DimName, Trim(sE))>0);\r\n          sEE = CellGetS(paDocCubeName, Trim(sE), 'Category');\r\n          DimensionElementInsert(DimName, '', Trim(sEE), 'C');\r\n         endif;\r\n          nsi = nsi + 1;\r\nend;\r\nendif;\r\n\r\nif (DimensionExists(paDoc_000_DimName)=NotFound);\r\n                     DimensionCreate(paDoc_000_DimName);\r\nelse;\r\n                     DimensionDeleteAllElements(paDoc_000_DimName);\r\nendif;\r\n\r\nif (DimensionExists(paDoc_009_DimName)=NotFound);\r\n                     DimensionCreate(paDoc_009_DimName);\r\nelse;\r\n                     DimensionDeleteAllElements(paDoc_009_DimName);\r\n\r\nendif;\r\n\r\n## add each of the paDoc metadata points\r\nDimensionElementInsert(paDoc_000_DimName, '','ApplicationFolders','S');\r\nDimensionElementInsert(paDoc_000_DimName, '','Views','S');\r\nDimensionElementInsert(paDoc_000_DimName, '','Subsets','S');\r\nDimensionElementInsert(paDoc_000_DimName, '','Cubes','S');\r\nDimensionElementInsert(paDoc_000_DimName, '','Dimensions','S');\r\nDimensionElementInsert(paDoc_000_DimName, '','Start Date Time','S');\r\nDimensionElementInsert(paDoc_000_DimName, '','Status','S');\r\nDimensionElementInsert(paDoc_000_DimName, '','Category','S');\r\nDimensionElementInsert(paDoc_000_DimName, '','Purpose','S');\r\nDimensionElementInsert(paDoc_000_DimName, '','Notes','S');\r\nDimensionElementInsert(paDoc_000_DimName, '','Exclude','S');\r\nDimensionElementInsert(paDoc_000_DimName, '','Size','S');\r\n\r\n## add each of the PA object types\r\n\tDimensionElementInsert(paDoc_009_DimName, '', 'Cubes','C');\r\n\tDimensionElementInsert(paDoc_009_DimName, '', 'ApplicationEntries','C');\r\n\tDimensionElementInsert(paDoc_009_DimName, '', 'Chores','C');\r\n\tDimensionElementInsert(paDoc_009_DimName, '', 'Dimensions','C');\r\n\tDimensionElementInsert(paDoc_009_DimName, '', 'Processes','C');\r\n\r\nif (DimensionExists(paDoc_001_DimName)=NotFound);\r\n                     DimensionCreate(paDoc_001_DimName);\r\nelse;\r\n                     DimensionDeleteAllElements(paDoc_001_DimName);\r\nendif;\r\n\r\nif (DimensionExists(paDoc_002_DimName)=NotFound);\r\n                     DimensionCreate(paDoc_002_DimName);\r\nelse;\r\n                     DimensionDeleteAllElements(paDoc_002_DimName);\r\nendif;\r\n\r\nif (DimensionExists(paDoc_003_DimName)=NotFound);\r\n                     DimensionCreate(paDoc_003_DimName);\r\nelse;\r\n                     DimensionDeleteAllElements(paDoc_003_DimName);\r\nendif;\r\n\r\nif (DimensionExists(paDoc_004_DimName)=NotFound);\r\n                     DimensionCreate(paDoc_004_DimName);\r\nelse;\r\n                     DimensionDeleteAllElements(paDoc_004_DimName);\r\nendif;\r\n\r\nif (DimensionExists(paDoc_005_DimName)=NotFound);\r\n                     DimensionCreate(paDoc_005_DimName);\r\nelse;\r\n                     DimensionDeleteAllElements(paDoc_005_DimName);\r\nendif;\r\n\r\nif (DimensionExists(paDoc_006_DimName)=NotFound);\r\n                     DimensionCreate(paDoc_006_DimName);\r\nelse;\r\n                     DimensionDeleteAllElements(paDoc_006_DimName);\r\nendif;\r\n\r\nif (DimensionExists(paDoc_007_DimName)=NotFound);\r\n                     DimensionCreate(paDoc_007_DimName);\r\nelse;\r\n                     DimensionDeleteAllElements(paDoc_007_DimName);\r\nendif;\r\n\r\nif (CubeExists(paDocCubeName)=NotFound);\r\n         CubeCreate(paDocCubeName, paDoc_009_DimName, paDoc_000_DimName);\r\nEndif;\r\n\r\n\r\ni=dimsiz('}Cubes');\r\nii=1;\r\nwhile (ii<=i);\r\n         sD = DIMNM('}Cubes', ii);\r\n\t\t if (subst(sD,1,1)@<>'}');\r\n         DimensionElementInsert(paDoc_009_DimName, '', TRIM(sD),'N');\r\n         DimensionElementComponentAdd(paDoc_009_DimName, 'Cubes',TRIM(sD), 1);\r\n\t\t endif;\r\n         ii=ii+1;\r\nend;\r\ni=dimsiz('}Chores');\r\nii=1;\r\nwhile (ii<=i);\r\n         sD = DIMNM('}Chores', ii);\r\n         DimensionElementInsert(paDoc_009_DimName, '', TRIM(sD),'N');\r\n         DimensionElementComponentAdd(paDoc_009_DimName, 'Chores',TRIM(sD), 1);\r\n         ii=ii+1;\r\nend;\r\ni=dimsiz('}Dimensions');\r\nii=1;\r\nwhile (ii<=i);\r\n         sD = DIMNM('}Dimensions', ii);\r\n\t\t if (subst(sD,1,1)@<>'}');\r\n         DimensionElementInsert(paDoc_009_DimName, '', TRIM(sD),'N');\r\n         DimensionElementComponentAdd(paDoc_009_DimName, 'Dimensions',TRIM(sD), 1);\r\n\t\t endif;\r\n         ii=ii+1;\r\nend;\r\ni=dimsiz('}Processes');\r\nii=1;\r\nwhile (ii<=i);\r\n         sD = DIMNM('}Processes', ii);\r\n\t\t if (subst(sD,1,1)@<>'}');\r\n         DimensionElementInsert(paDoc_009_DimName, '', TRIM(sD),'N');\r\n         DimensionElementComponentAdd(paDoc_009_DimName, 'Processes',TRIM(sD), 1);\r\n\t\t endif;\r\n         ii=ii+1;\r\nend;\r\ni=dimsiz('}ApplicationEntries');\r\nii=1;\r\nwhile (ii<=i);\r\n         sD = DIMNM('}ApplicationEntries', ii);\r\n\t\t if (subst(sD,1,1)@<>'}');\r\n         DimensionElementInsert(paDoc_009_DimName, '', TRIM(sD),'N');\r\n         DimensionElementComponentAdd(paDoc_009_DimName, 'ApplicationEntries',TRIM(sD), 1);\r\n\t\t endif;\r\n         ii=ii+1;\r\nend;\r\n \r\n# --- determine all current subsets for each dimension\r\niD = dimsiz('}Dimensions');\r\niDer = 1;\r\nwhile (iDer<=iD);\r\n         sD = Dimnm('}Dimensions', iDer);\r\n         if (subst(sD,1,1)@<>'}');\r\n                  myfoldername = Trim(sD) | '}subs';\r\n                  if (FileExists(myfoldername)>0);\r\n                           asciioutput(pOutputSite|'paDoc.bat', 'dir /B \"' | pRUX | TRim(myfoldername) | '\" > \"' | pOutputSite| Trim(sD) | 'subsets.txt\"');\r\n                  endif;\r\n         endif;\r\n         iDer = iDer + 1;\r\nend;\r\n\r\n# --- determine all current views for each cube\r\niD = dimsiz('}Cubes');\r\niDer = 1;\r\nwhile (iDer<=iD);\r\n         sD = Dimnm('}Cubes', iDer);\r\n         if (subst(sD,1,1)@<>'}');\r\n                  myfoldername = Trim(sD) | '}vues';\r\n                  if (FileExists(myfoldername)>0);\r\n                           asciioutput(pOutputSite|'paDocc.bat', 'dir /B \"' | pRUX | TRim(myfoldername) | '\"  > \"' | pOutputSite| Trim(sD) | 'views.txt\"');\r\n                  endif;\r\n         endif;\r\n         iDer = iDer + 1;\r\nend;\r\n                  \r\n# --- application folders\r\nmyfoldername = '}Applications';\r\nasciioutput(pOutputSite|'paDoca.bat', 'dir /B \"' | pRUX | TRim(myfoldername) | '\" > \"' | pOutputSite| 'applicationfolders.txt');\r\n\r\n# --- cube size\r\nasciioutput(pOutputSite|'paDocs.bat', '(for /R  %%A in (*.cub) do echo %%~fA %%~zA) | findstr /v \"echo\" >\"' | pOutputSite | 'assessedcubs.txt\"');\r\n\r\n# --- determine all current views for each cube for each user\r\niD = dimsiz('}Clients');\r\niC = dimsiz('}Cubes');\r\niCC = 1;\r\niDer = 1;\r\nwhile (iDer<=iD);\r\n         sD = Dimnm('}Clients', iDer);\r\n         if (subst(sD,1,1)@<>'}');\r\n                  myfoldername = Trim(sD);\r\n                  if (FileExists(myfoldername)>0);\r\n                           DimensionElementInsert('}sys_paDoc', '', Trim(sD), 'S');\r\n                           while (iCC<=iC);\r\n                                    sCube = Dimnm('}Cubes', iCC);\r\n                                    if (FileExists(myfoldername | '/' | Trim(sCube) | '}vues')>0);\r\n                                    asciioutput(pOutputSite|'paDocpri.bat', 'dir /B \"' | pRUX | TRim(myfoldername) | '/' | Trim(sCube) | '}vues\"  > \"' | pOutputSite | Trim(sD) | '-' | Trim(sCube) | 'views.txt\"');\r\n                                    endif;\r\n                                    iCC = iCC + 1;\r\n                            end;\r\n                           iCC = 1;\r\n                  endif;\r\n         endif;\r\n         iDer = iDer + 1;\r\nend;\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "MetadataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+    "DataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+    "EpilogProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n\r\nExecuteCommand(pOutputSite | '\\' |'paDoc.bat', 1);\r\nExecuteCommand(pOutputSite | '\\' |'paDocc.bat', 1);\r\nExecuteCommand(pOutputSite | '\\' |'paDoca.bat', 1);\r\nExecuteCommand(pOutputSite | '\\' |'paDocs.bat', 1);\r\nExecuteCommand(pOutputSite | '\\' |'paDocpri.bat', 1);\r\n\r\nExecuteProcess('}sys_paDocExecutePros','pRUX', TRIM(pRUX),'pProcess','}sys_paRux01');\r\nExecuteProcess('}sys_paDocExecutePros','pProcess','}sys_paPro01', 'pOutputSite', TRIM(pOutputSite));\r\nExecuteProcess('}sys_paDocExecutePros','pProcess','}sys_paDim01', 'pOutputSite', TRIM(pOutputSite));\r\nExecuteProcess('}sys_paDocExecutePros','pProcess','}sys_paPro02', 'pOutputSite', TRIM(pOutputSite));\r\nExecuteProcess('}sys_paDocExecutePros','pProcess','}sys_paPro03', 'pOutputSite', TRIM(pOutputSite));\r\nExecuteProcess('}sys_paDocExecutePros','pProcess','}sys_paPro04', 'pOutputSite', TRIM(pOutputSite));\r\nExecuteProcess('}sys_paDocExecutePros','pProcess','}sys_paPro05', 'pOutputSite', TRIM(pOutputSite));\r\n# --- compile metadata on views\r\nExecuteProcess('}sys_paDocExecutePros','pProcess','}sys_paPro06', 'pOutputSite', TRIM(pOutputSite));\r\n# --- compile metadata on application folders\r\nExecuteProcess('}sys_paDocExecutePros','pProcess','}sys_paPro07', 'pOutputSite', TRIM(pOutputSite));\r\n# --- compile metadata on cubes\r\nExecuteProcess('}sys_paDocExecutePros','pProcess','}sys_paPro08', 'pOutputSite', TRIM(pOutputSite));",
+    "DataSource": {
+        "Type": "None"
+    },
+    "Parameters": [
+        {
+            "Name": "pRUX",
+            "Prompt": "Enter a valid path to the TM1 Server's Data folder",
+            "Value": "E:\\TM1 Servers\\Food Distribution\\Data\\",
+            "Type": "String"
+        },
+        {
+            "Name": "pAppLoc",
+            "Prompt": "Enter a valid path to the paDoc folder",
+            "Value": "E:\\Program Files\\ibm\\cognos\\tm1_64\\webapps\\tm1web\\paDoc",
+            "Type": "String"
+        }
+    ],
+    "Variables": [],
+    "Attributes": {
+        "Caption": "sys_paDoc_Setup"
+    }
+}
+]

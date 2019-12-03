@@ -1,0 +1,141 @@
+body {
+    padding-top: 55px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h2 {
+    font-weight: bold;
+    text-align: center;
+}
+
+li #btn-holder {
+    text-align: center;
+}
+
+.heading{
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+}
+
+IMG.logo{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.toolTip {
+  position: absolute;
+  display: none;
+  min-width: 80px;
+  height: auto;
+  background: none repeat scroll 0 0 #ffffff;
+  border: 1px solid #6F257F;
+  padding: 14px;
+  text-align: center;
+}
+
+.title1 {
+    text-align: center;
+    font-size: x-large;
+    font-weight: bold;
+    color: #1d2744;
+    margin: 10px auto 10px;
+}
+
+.title2 {
+    text-align: center;
+    font-size: medium;
+    font-weight: bold;
+    color: #1d2744;
+    margin: 10px auto 10px;
+}
+
+.title3 {
+    text-align: center;
+    font-size: small;
+    color: #1d2744;
+    font-weight: bold;
+}
+
+svg{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bar{
+    fill: #3f81b4;
+}
+
+.bar:hover{
+    fill: #1d2744;
+}
+
+.fileWrite{
+    border-bottom-style: double;
+}
+
+.tind{
+    text-indent: 5px;
+}
+
+.ui.icon.header:first-child {
+    margin-top: 15px;
+}
+
+.form {
+    width: 300px;
+    margin: 15px auto;
+}
+
+.container {
+    text-align: center;
+/*    margin-top: 50px;*/
+}
+
+.jumbotron {
+    color: #2c3e50;
+    background: #ecf0f1;
+}
+
+.navbar-inverse {
+    background: #2c3e50;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+    color: white;
+}
+
+.navbar-inverse .navbar-brand {
+    color: white;
+}
+
+.dropdown-menu {
+    padding-left: 3px
+}
+
+.dropdown-menu li a {
+    padding: none;
+}
+
+.btn-space {
+    margin-top: 3px;
+}
+
+#container-buttons {
+    padding-bottom: 15px;
+}
+
+#install-btn {
+    margin-right: 25px;
+}
+
+#config-btn {
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+#report-btn {
+    margin-left: 25px;
+}
